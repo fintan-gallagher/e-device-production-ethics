@@ -41,6 +41,7 @@
                                     Welcome to the home page for Fintan's record store (This is the welcome view)
                                 </p>
                             </div>
+
                         </div>
                     </div>
                 </div>

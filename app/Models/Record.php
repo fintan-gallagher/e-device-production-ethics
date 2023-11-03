@@ -14,13 +14,8 @@ class Record extends Model
         'artist',
         'genre',
         'isbn',
-        'year',
+        'release_year',
         'description',
         'record_cover',
     ];
 }
-
-// $record = new Record();
-// $record->title = 'Sample Record Title';
-// $record->description = "This is a sample record description";
-// $record->save();

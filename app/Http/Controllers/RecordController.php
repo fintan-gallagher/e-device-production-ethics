@@ -34,18 +34,34 @@ class RecordController extends Controller
      */
     public function store(Request $request)
     {
+
+      if($request->hasFile('record_cover')) {
+        $image = $request->file('record_cover');
+        $imageName = time() . '.' . $image->extension();
+
+        $image->storeAs('public/records', $imageName);
+        $record_cover_name = 'storage/records/' . $imageName;
+      }
+
       $request->validate([
-        'title' => 'required'
+        'title' => 'required',
+        'artist' => 'required',
+        'genre' => 'required',
+        'isbn' => 'required',
+        'release_year' => 'required',
+        'description' => 'required|max:500',
+
+        'record_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
       ]);
 
       Record::create([
         'title' => $request->title,
-        'artist' => "Test Artist",
-        'genre' => "Test Genre",
-        'isbn' => "ISBN123123",
-        'year' => "Test Year",
-        'description' => "Test Description",
-        'record_cover' => "public\image\Tess_the_TickTock_Dog.jpg",
+        'artist' => $request->artist,
+        'genre' => $request->genre,
+        'isbn' => $request->isbn,
+        'release_year' => $request->release_year,
+        'description' => $request->description,
+        'record_cover' => $record_cover_name,
         'created_at' => now(),
         'updated_at' => now()
       ]);

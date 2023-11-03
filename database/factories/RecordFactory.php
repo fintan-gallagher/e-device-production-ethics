@@ -18,10 +18,10 @@ class RecordFactory extends Factory
     {
         return [
             'title' => fake()->sentence,
-            'artist' => fake()->sentence,
+            'artist' => fake()->word,
             'genre' => fake()->word,
             'isbn' => fake()->isbn13,
-            'year' => fake()->word,
+            'release_year' => fake()->word,
             'description' => fake()->paragraph,
             'record_cover' => fake()->imageUrl,
             'created_at' => now(),
@@ -29,3 +29,4 @@ class RecordFactory extends Factory
         ];
     }
 }
+

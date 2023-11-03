@@ -21,6 +21,9 @@ Route::get('/', function () {
 
 Route::resource('/records', RecordController::class);
 
+// Route::get('/records', 'RecordController@index')->name('records.index');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

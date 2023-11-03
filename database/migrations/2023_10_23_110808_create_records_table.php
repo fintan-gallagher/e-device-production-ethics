@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            //$table->string('artist');
+            $table->string('artist');
             $table->string('genre');
             $table->string('isbn');
-            $table->string('year');
+            $table->string('release_year');
             $table->text('description');
             $table->string('record_cover');
             $table->timestamps();
