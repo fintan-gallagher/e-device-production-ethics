@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('artist');
             $table->string('genre');
             $table->string('isbn');
-            $table->string('release_year');
+            $table->date('release_year');
             $table->text('description');
             $table->string('record_cover');
             $table->timestamps();
