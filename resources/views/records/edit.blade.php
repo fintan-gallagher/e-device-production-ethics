@@ -8,7 +8,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="my-6 p-6 bg-white border-b border-gray-200 shadow-sm sm:rounded-lg">
-                <form action="{{ route('records.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('records.update', $record) }}" method="post" enctype="multipart/form-data">
+                    @method('put')
                     @csrf
                     <x-text-input
                         type="text"
@@ -17,7 +18,8 @@
                         placeholder="Title"
                         class="w-full"
                         autocomplete="off"
-                        :value="@old('title')"></x-text-input>
+                        :value="@old('title', $record->title)"
+                    ></x-text-input>
 
                     <x-text-input
                         type="text"
@@ -25,7 +27,8 @@
                         field="artist"
                         placeholder="Artist..."
                         class="w-full mt-6"
-                        :value="@old('artist')"></x-text-input>
+                        :value="@old('artist', $record->artist)"
+                    ></x-text-input>
 
                     <x-text-input
                         type="text"
@@ -33,7 +36,8 @@
                         field="genre"
                         placeholder="Genre..."
                         class="w-full mt-6"
-                        :value="@old('genre')"></x-text-input>
+                        :value="@old('genre', $record->genre)"
+                    ></x-text-input>
 
                     <x-text-input
                         type="text"
@@ -41,7 +45,8 @@
                         field="isbn"
                         placeholder="ISBN..."
                         class="w-full mt-6"
-                        :value="@old('isbn')"></x-text-input>
+                        :value="@old('isbn', $record->isbn)"
+                    ></x-text-input>
 
                     <x-date-input
                         type="text"
@@ -49,7 +54,8 @@
                         field="release_year"
                         placeholder="Year of release..."
                         class="w-full mt-6"
-                        :value="@old('release_year')"></x-date-input>
+                        :value="@old('release_year', $record->release_year)"
+                    ></x-date-input>
 
                     <x-textarea
                         name="description"
@@ -57,8 +63,8 @@
                         field="description"
                         placeholder="Description..."
                         class="w-full mt-6"
-                        :value="@old('description')">
-                    </x-textarea>
+                        :value="@old('description', $record->description)"
+                    ></x-textarea>
 
                     <x-file-input
                         type="file"
@@ -66,8 +72,8 @@
                         placeholder="Record"
                         class="w-full mt-6"
                         field="record_cover"
-                        :value="@old('record_cover')">>
-                    </x-file-input>
+                        :value="@old('record_cover', $record->record_cover)"
+                    ></x-file-input>
 
                     <x-primary-button class="mt-6">Save Record</x-primary-button>
                 </form>

@@ -8,6 +8,9 @@
     <!-- Page Content -->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <x-alert-success>
+            {{ session('success') }}
+        </x-alert-success>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="my-6 p-6 bg-white border-b border-gray-200 shadow-sm sm:rounded-lg">
                     <table class="table table-hover">
@@ -20,20 +23,34 @@
                             </td>
                             </tr>
                             <tr>
-                                <td class="font-bold ">Title  </td>
+                                <td class="font-bold ">Title</td>
                                 <td>{{ $record->title }}</td>
                             </tr>
-
                             <tr>
-                                <td class="font-bold">Description </td>
+                                <td class="font-bold ">Artist</td>
+                                <td>{{ $record->artist }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Description</td>
                                 <td>{{ $record->description }}</td>
                             </tr>
                             <tr>
-                                <td class="font-bold ">Genre </td>
+                                <td class="font-bold ">Genre</td>
                                 <td>{{ $record->genre }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold ">Release Date</td>
+                                <td>{{ $record->release_year }}</td>
                             </tr>
                         </tbody>
                     </table>
+                    <x-primary-button><a href="{{ route('records.edit', $record) }}">Edit</a></x-primary-button>
+
+                    <form action="{{ route('records.destroy', $record) }}" method="post">
+                    @method('delete')
+                    @csrf
+                    <x-primary-button onclick="return confirm('Are you sure you want to delete this record?')">Delete</x-primary-button>
+                    </form>
                 </div>
             </div>
         </div>

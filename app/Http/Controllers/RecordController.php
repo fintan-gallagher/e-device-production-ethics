@@ -65,7 +65,7 @@ class RecordController extends Controller
         'created_at' => now(),
         'updated_at' => now()
       ]);
-      return to_route('records.index');
+      return to_route('records.index')->with('success', 'Record created successfully');
     }
 
     /**
@@ -80,24 +80,55 @@ class RecordController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Record $record)
     {
-        //
+        return view('records.edit')->with('record', $record);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, Record $record)
+{
+    $request->validate([
+        'title' => 'required',
+        'artist' => 'required',
+        'genre' => 'required',
+        'isbn' => 'required',
+        'release_year' => 'required',
+        'description' => 'required|max:500',
+        'record_cover' => 'nullable|image'
+    ]);
+
+    $record_cover_name = $record->record_cover; // Default to the existing image name
+
+    if ($request->hasFile('record_cover')) {
+        $image = $request->file('record_cover');
+        $imageName = time() . '.' . $image->extension();
+        $image->storeAs('public/records', $imageName);
+        $record_cover_name = 'storage/records/' . $imageName;
     }
+
+    $record->update([
+        'title' => $request->title,
+        'artist' => $request->artist,
+        'genre' => $request->genre,
+        'isbn' => $request->isbn,
+        'release_year' => $request->release_year,
+        'description' => $request->description,
+        'record_cover' => $record_cover_name
+    ]);
+
+    return redirect()->route('records.show', $record)->with('success', 'Record updated successfully');
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Record $record)
     {
-        //
+        $record->delete();
+        return to_route('records.index')->with('success', 'Record deleted successfully');
     }
 }

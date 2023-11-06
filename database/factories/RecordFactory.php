@@ -21,7 +21,7 @@ class RecordFactory extends Factory
             'artist' => fake()->word,
             'genre' => fake()->word,
             'isbn' => fake()->isbn13,
-            'release_year' => fake()->word,
+            'release_year' => fake()->date,
             'description' => fake()->paragraph,
             'record_cover' => fake()->imageUrl,
             'created_at' => now(),
