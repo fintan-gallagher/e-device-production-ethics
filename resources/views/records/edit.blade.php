@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Record') }}
+            {{ __('Edit Record') }}
         </h2>
     </x-slot>
 
@@ -30,14 +30,14 @@
                         :value="@old('artist', $record->artist)"
                     ></x-text-input>
 
-                    <x-text-input
+                    <x-genre-dropdown
                         type="text"
                         name="genre"
                         field="genre"
                         placeholder="Genre..."
                         class="w-full mt-6"
                         :value="@old('genre', $record->genre)"
-                    ></x-text-input>
+                    ></x-genre-dropdown>
 
                     <x-text-input
                         type="text"

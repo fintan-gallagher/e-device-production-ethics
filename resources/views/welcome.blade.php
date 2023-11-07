@@ -38,7 +38,7 @@
 
                             <div class="card-body">
                                 <p>
-                                    Welcome to the home page for Fintan's record store (This is the welcome view)
+                                    Welcome to Fintan's record store
                                 </p>
                             </div>
 
