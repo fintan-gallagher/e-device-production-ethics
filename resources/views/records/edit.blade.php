@@ -11,6 +11,9 @@
                 <form action="{{ route('records.update', $record) }}" method="post" enctype="multipart/form-data">
                     @method('put')
                     @csrf
+
+                    <p>Title</p>
+
                     <x-text-input
                         type="text"
                         name="title"
@@ -20,6 +23,8 @@
                         autocomplete="off"
                         :value="@old('title', $record->title)"
                     ></x-text-input>
+
+                    <p>Artist</p>
 
                     <x-text-input
                         type="text"
@@ -39,6 +44,8 @@
                         :value="@old('genre', $record->genre)"
                     ></x-genre-dropdown>
 
+                    <p>ISBN</p>
+
                     <x-text-input
                         type="text"
                         name="isbn"
@@ -48,6 +55,8 @@
                         :value="@old('isbn', $record->isbn)"
                     ></x-text-input>
 
+                    <p>Release Date</p>
+
                     <x-date-input
                         type="text"
                         name="release_year"
@@ -56,6 +65,8 @@
                         class="w-full mt-6"
                         :value="@old('release_year', $record->release_year)"
                     ></x-date-input>
+
+                    <p>Description</p>
 
                     <x-textarea
                         name="description"

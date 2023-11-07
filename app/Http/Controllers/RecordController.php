@@ -32,9 +32,9 @@ class RecordController extends Controller
         // Check if a file with the name 'record_cover' is present in the request
         if ($request->hasFile('record_cover')) {
             $image = $request->file('record_cover');
-            $imageName = time() . '.' . $image->extension();
 
-            // Store the uploaded image in the 'public/records' directory with a unique name
+             // Store the uploaded image in the 'public/records' directory with a unique name
+            $imageName = time() . '.' . $image->extension();
             $image->storeAs('public/records', $imageName);
             $record_cover_name = 'storage/records/' . $imageName;
         }
@@ -45,7 +45,7 @@ class RecordController extends Controller
             'artist' => 'required',
             'genre' => 'required',
             'isbn' => 'required',
-            'release_year' => 'required',
+            'release_year' => 'required|date|before:2100-01-01',
             'description' => 'required|max:500',
             'record_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -89,7 +89,7 @@ class RecordController extends Controller
             'artist' => 'required',
             'genre' => 'required',
             'isbn' => 'required',
-            'release_year' => 'required',
+            'release_year' => 'required|date|before:2100-12-31',
             'description' => 'required|max:500',
             'record_cover' => 'nullable|image'
         ]);

@@ -5,4 +5,8 @@
         <option value="Glitch">Glitch</option>
         <option value="Hip-Hop">Hip-Hop</option>
     </select>
+
+    @error($field)
+        <div class="text-red-600 text-sm">{{ $message }}</div>
+    @enderror
 </div>

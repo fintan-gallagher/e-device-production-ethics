@@ -42,6 +42,10 @@
                                 <td class="font-bold ">Release Date</td>
                                 <td>{{ $record->release_year }}</td>
                             </tr>
+                            <tr>
+                                <td class="font-bold ">ISBN</td>
+                                <td>{{ $record->isbn }}</td>
+                            </tr>
                         </tbody>
                     </table>
                     <x-primary-button><a href="{{ route('records.edit', $record) }}">Edit</a></x-primary-button>
