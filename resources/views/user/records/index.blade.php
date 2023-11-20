@@ -11,9 +11,6 @@
                 {{ session('success') }}
             </x-alert-success>
 
-            <x-primary-button>
-                <a href="{{ route('records.create') }}">Add a Record</a>
-            </x-primary-button>
 
             <table class="min-w-full table-auto">
                 <thead>
@@ -29,7 +26,7 @@
                     @forelse ($records as $record)
                         <tr>
                             <td class="px-4 py-2">
-                                <a href="{{ route('records.show', $record) }}">{{ $record->title }}</a>
+                                <a href="{{ route('user.records.show', $record) }}">{{ $record->title }}</a>
                             </td>
                             <td class="px-4 py-2">{{ $record->artist }}</td>
                             <td class="px-4 py-2">{{ $record->genre }}</td>
@@ -49,6 +46,9 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        <div class="pagination-links">
+            {{ $records->links() }}
         </div>
     </div>
 </x-app-layout>

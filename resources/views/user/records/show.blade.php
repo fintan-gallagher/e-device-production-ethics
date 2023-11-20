@@ -48,13 +48,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    <x-primary-button><a href="{{ route('records.edit', $record) }}">Edit</a></x-primary-button>
+                   
 
-                    <form action="{{ route('records.destroy', $record) }}" method="post">
-                    @method('delete')
-                    @csrf
-                    <x-primary-button onclick="return confirm('Are you sure you want to delete this record?')">Delete</x-primary-button>
-                    </form>
+
                 </div>
             </div>
         </div>

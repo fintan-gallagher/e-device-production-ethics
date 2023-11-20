@@ -1,34 +1,48 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Record;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class RecordController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
         // Retrieve all records from the 'records' table in the database
-        $records = Record::all();
+        $records = Record::paginate(5);
         // Return a view called 'records.index' and pass the retrieved records to it
-        return view('records.index', compact('records'));
+        return view('admin.records.index')->with('records', $records);
     }
 
     public function home()
     {
         // Return a view called 'home' (This might be your application's homepage)
-        return view('home');
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        return view('admin.records.welcome');
     }
 
     public function create()
     {
         // Return a view for creating a new record (likely a form)
-        return view('records.create');
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        return view('admin.records.create');
     }
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
         // Check if a file with the name 'record_cover' is present in the request
         if ($request->hasFile('record_cover')) {
             $image = $request->file('record_cover');
@@ -64,25 +78,34 @@ class RecordController extends Controller
         ]);
 
         // Redirect to the 'records.index' route with a success message
-        return to_route('records.index')->with('success', 'Record created successfully');
+        return to_route('admin.records.index')->with('success', 'Record created successfully');
     }
 
     public function show($id)
     {
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
         // Find a record in the database by its ID
         $record = Record::find($id);
         // Return a view called 'records.show' and pass the found record to it
-        return view('records.show')->with('record', $record);
+        return view('admin.records.show')->with('record', $record);
     }
 
     public function edit(Record $record)
     {
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
         // Return a view for editing an existing record and pass the record to it
-        return view('records.edit')->with('record', $record);
+        return view('admin.records.edit')->with('record', $record);
     }
 
     public function update(Request $request, Record $record)
     {
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
         // Validate the incoming request data for updating a record
         $request->validate([
             'title' => 'required',
@@ -117,15 +140,18 @@ class RecordController extends Controller
         ]);
 
         // Redirect to the 'records.show' route with a success message
-        return redirect()->route('records.show', $record)->with('success', 'Record updated successfully');
+        return redirect()->route('admin.records.show', $record)->with('success', 'Record updated successfully');
     }
 
     public function destroy(Record $record)
     {
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
         // Delete the specified record from the database
         $record->delete();
 
         // Redirect to the 'records.index' route with a success message
-        return to_route('records.index')->with('success', 'Record deleted successfully');
+        return to_route('admin.records.index')->with('success', 'Record deleted successfully');
     }
 }

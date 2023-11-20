@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RecordController;
+use App\Http\Controllers\admin\RecordController as AdminRecordController;
+use App\Http\Controllers\user\RecordController as UserRecordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ Route::get('/', function () {
 });
 
 // Define a resourceful route for managing 'records' using the 'RecordController'
-Route::resource('/records', RecordController::class);
+// Route::resource('/records', AdminRecordController::class);
 
 // Define a route to access the 'dashboard' view, which is protected by the 'auth' and 'verified' middleware
 Route::get('/dashboard', function () {
@@ -39,6 +40,9 @@ Route::middleware('auth')->group(function () {
     // Route for deleting a user's profile, linked to the 'ProfileController@destroy' method
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('/admin/records', AdminRecordController::class)->middleware(['auth'])->names('admin.records');
+Route::resource('/user/records', UserRecordController::class)->middleware(['auth'])->names('user.records')->only(['index', 'show']);
 
 // Include routes defined in the 'auth.php' file, which handles authentication routes
 require __DIR__.'/auth.php';
