@@ -43,6 +43,10 @@
                                 <td>{{ $record->release_year }}</td>
                             </tr>
                             <tr>
+                                <td class="font-bold ">Label</td>
+                                <td>{{ $record->label->name }}</td>
+                            </tr>
+                            <tr>
                                 <td class="font-bold ">ISBN</td>
                                 <td>{{ $record->isbn }}</td>
                             </tr>

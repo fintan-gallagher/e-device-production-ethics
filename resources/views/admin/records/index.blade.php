@@ -22,6 +22,7 @@
                         <th class="px-4 py-2">Artist</th>
                         <th class="px-4 py-2">Genre</th>
                         <th class="px-4 py-2">Description</th>
+                        <th class="px-4 py-2">Label</th>
                         <th class="px-4 py-2">Image</th>
                     </tr>
                 </thead>
@@ -34,6 +35,7 @@
                             <td class="px-4 py-2">{{ $record->artist }}</td>
                             <td class="px-4 py-2">{{ $record->genre }}</td>
                             <td class="px-4 py-2">{{ $record->description }}</td>
+                            <td class="px-4 py-2">{{ $record->label->name }}</td>
                             <td class="px-4 py-2">
                                 @if ($record->record_cover)
                                     <img src="{{ asset($record->record_cover) }}" alt="{{ $record->title }}" width="100">
@@ -50,8 +52,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination-links">
+        {{-- <div class="pagination-links">
             {{ $records->links() }}
-        </div>
+        </div> --}}
     </div>
 </x-app-layout>

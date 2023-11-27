@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Record;
+use App\Models\Label;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,11 @@ class RecordController extends Controller
     {
         $user = Auth::user();
         $user->authorizeRoles('admin');
+
         // Retrieve all records from the 'records' table in the database
-        $records = Record::paginate(5);
+        // $records = Record::all();
+        // $records = Record::paginate(5);
+        $records = Record::with('label')->get();
         // Return a view called 'records.index' and pass the retrieved records to it
         return view('admin.records.index')->with('records', $records);
     }
@@ -35,7 +39,8 @@ class RecordController extends Controller
         $user = Auth::user();
         $user->authorizeRoles('admin');
 
-        return view('admin.records.create');
+        $labels = Label::all();
+        return view('admin.records.create')->with('labels', $labels);
     }
 
     public function store(Request $request)
@@ -62,6 +67,7 @@ class RecordController extends Controller
             'release_year' => 'required|date|before:2100-01-01',
             'description' => 'required|max:500',
             'record_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'label_id' => 'required',
         ]);
 
         // Create a new Record model instance and populate it with the validated data
@@ -73,6 +79,7 @@ class RecordController extends Controller
             'release_year' => $request->release_year,
             'description' => $request->description,
             'record_cover' => $record_cover_name,
+            'label_id' => $request->label_id,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -98,7 +105,8 @@ class RecordController extends Controller
         $user->authorizeRoles('admin');
 
         // Return a view for editing an existing record and pass the record to it
-        return view('admin.records.edit')->with('record', $record);
+        $labels = Label::all();
+        return view('admin.records.edit', compact('record', 'labels'));
     }
 
     public function update(Request $request, Record $record)
@@ -136,7 +144,8 @@ class RecordController extends Controller
             'isbn' => $request->isbn,
             'release_year' => $request->release_year,
             'description' => $request->description,
-            'record_cover' => $record_cover_name
+            'record_cover' => $record_cover_name,
+            'label_id' => $request->label_id,
         ]);
 
         // Redirect to the 'records.show' route with a success message

@@ -14,8 +14,11 @@ class RecordController extends Controller
     {
         $user = Auth::user();
         $user->authorizeRoles('user');
+
         // Retrieve all records from the 'records' table in the database
-        $records = Record::paginate(5);
+        // $records = Record::all();
+        // $records = Record::paginate(5);
+        $records = Record::with('label')->get();
         // Return a view called 'records.index' and pass the retrieved records to it
         return view('user.records.index')->with('records', $records);
     }

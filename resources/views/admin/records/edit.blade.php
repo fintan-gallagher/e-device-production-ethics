@@ -77,6 +77,10 @@
                         :value="@old('description', $record->description)"
                     ></x-textarea>
 
+                     <div class="mt-6">
+                        <x-select-label name="label_id" :labels="$labels" :selected="old('label_id')"/>
+                    </div>
+
                     <x-file-input
                         type="file"
                         name="record_cover"

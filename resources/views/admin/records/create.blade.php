@@ -66,6 +66,10 @@
                         :value="@old('description')">
                     </x-textarea>
 
+                     <div class="mt-6">
+                        <x-select-label name="label_id" :labels="$labels" :selected="old('label_id')"/>
+                    </div>
+
                     {{-- File input for images --}}
                     <x-file-input
                         type="file"
