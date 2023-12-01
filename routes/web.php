@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\RecordController as AdminRecordController;
 use App\Http\Controllers\user\RecordController as UserRecordController;
+use App\Http\Controllers\admin\LabelController as AdminLabelController;
+use App\Http\Controllers\user\LabelController as UserLabelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +46,7 @@ Route::middleware('auth')->group(function () {
 Route::resource('/admin/records', AdminRecordController::class)->middleware(['auth'])->names('admin.records');
 Route::resource('/user/records', UserRecordController::class)->middleware(['auth'])->names('user.records')->only(['index', 'show']);
 
+Route::resource('admin/labels', AdminLabelController::class)->middleware(['auth'])->names('admin.labels');
+Route::resource('user/labels', UserLabelController::class)->middleware(['auth'])->names('user.labels')->only(['index', 'show']);
 // Include routes defined in the 'auth.php' file, which handles authentication routes
 require __DIR__.'/auth.php';

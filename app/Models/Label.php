@@ -10,6 +10,11 @@ class Label extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'address',
+        'email',
+    ];
     //returns the label's records
     // eg. $label->records
     public function records()

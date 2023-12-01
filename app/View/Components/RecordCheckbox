@@ -1,0 +1,35 @@
+<?
+
+
+namespace App\View\Components;
+
+use Illuminate\View\Component;
+
+class RecordCheckbox extends Component
+{
+    public $record;
+    public $checked;
+
+    /**
+     * Create a new component instance.
+     *
+     * @param  \App\Models\Record  $record
+     * @param  bool  $checked
+     * @return void
+     */
+    public function __construct($record, $checked = false)
+    {
+        $this->record = $record;
+        $this->checked = $checked;
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
+    public function render()
+    {
+        return view('components.record-checkbox');
+    }
+}
