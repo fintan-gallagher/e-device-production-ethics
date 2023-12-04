@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Artist;
 use App\Models\Record;
 use App\Models\Label;
 use Illuminate\Http\Request;
@@ -40,7 +41,9 @@ class RecordController extends Controller
         $user->authorizeRoles('admin');
 
         $labels = Label::all();
-        return view('admin.records.create')->with('labels', $labels);
+        $artists = Artist::all();
+
+        return view('admin.records.create')->with('labels', $labels)->with('artists', $artists);
     }
 
     public function store(Request $request)
@@ -68,6 +71,7 @@ class RecordController extends Controller
             'description' => 'required|max:500',
             'record_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'label_id' => 'required',
+            'artists' => ['required', 'exists:artists,id']
         ]);
 
         // Create a new Record model instance and populate it with the validated data

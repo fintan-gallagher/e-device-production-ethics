@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run(): void
+    public function run()
     {
         // Record::factory()->count(10)->create();
         // $this->call(RoleSeeder::class);
@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
         //I only need to call the LabelSeeder, this calls hasRecords()
         //which seeds the records table with 20 records for each Label
         $this->call(LabelSeeder::class);
+
+        $this->call(ArtistSeeder::class);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

@@ -50,8 +50,16 @@
                                 <td class="font-bold ">ISBN</td>
                                 <td>{{ $record->isbn }}</td>
                             </tr>
-                        </tbody>
-                    </table>
+                        </table>
+
+                        @foreach ($record->artists as $artist)
+
+                                <p class="font-bold ">Artist</p>
+                                <a href="{{ route('admin.artists.show', $artist)  }}" > <p>{{ $artist->name }}</p>
+
+                        @endforeach
+                        
+
                     <x-primary-button><a href="{{ route('admin.records.edit', $record) }}">Edit</a></x-primary-button>
 
                     <form action="{{ route('admin.records.destroy', $record) }}" method="post">

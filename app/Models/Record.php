@@ -25,4 +25,9 @@ class Record extends Model
     {
         return $this->belongsTo(Label::class);
     }
+
+    public function artists()
+    {
+        return $this->belongsToMany(Artist::class)->withTimestamps();
+    }
 }
