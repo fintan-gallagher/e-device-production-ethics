@@ -32,7 +32,12 @@
                             <td class="px-4 py-2">
                                 <a href="{{ route('admin.records.show', $record) }}">{{ $record->title }}</a>
                             </td>
-                            <td class="px-4 py-2">{{ $record->artist }}</td>
+                            <td class="px-4 py-2">@foreach ($record->artists as $artist)
+                                {{ $artist->name }}
+                                @if (!$loop->last)
+                                    <br>
+                                @endif
+                            @endforeach</td>
                             <td class="px-4 py-2">{{ $record->genre }}</td>
                             <td class="px-4 py-2">{{ $record->description }}</td>
                             <td class="px-4 py-2">{{ $record->label->name }}</td>

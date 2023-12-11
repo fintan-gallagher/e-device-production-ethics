@@ -81,6 +81,14 @@
                         <x-select-label name="label_id" :labels="$labels" :selected="old('label_id')"/>
                     </div>
 
+                    <div class="form-group">
+                        <label for ="artists"> <strong>Artists</strong> <br> </label>
+                        @foreach ($artists as $artist)
+                            <input type="checkbox" name="artists[]" value="{{ $artist->id }}">
+                            {{ $artist->name }}
+                            @endforeach
+                    </div>
+
                     <x-file-input
                         type="file"
                         name="record_cover"

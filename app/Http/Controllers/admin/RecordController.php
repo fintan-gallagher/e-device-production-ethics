@@ -21,6 +21,7 @@ class RecordController extends Controller
         // $records = Record::all();
         // $records = Record::paginate(5);
         $records = Record::with('label')->get();
+        $records = Record::with('artists')->get();
         // Return a view called 'records.index' and pass the retrieved records to it
         return view('admin.records.index')->with('records', $records);
     }
@@ -47,50 +48,54 @@ class RecordController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $user = Auth::user();
-        $user->authorizeRoles('admin');
+{
+    $user = Auth::user();
+    $user->authorizeRoles('admin');
 
-        // Check if a file with the name 'record_cover' is present in the request
-        if ($request->hasFile('record_cover')) {
-            $image = $request->file('record_cover');
+    // Check if a file with the name 'record_cover' is present in the request
+    if ($request->hasFile('record_cover')) {
+        $image = $request->file('record_cover');
 
-             // Store the uploaded image in the 'public/records' directory with a unique name
-            $imageName = time() . '.' . $image->extension();
-            $image->storeAs('public/records', $imageName);
-            $record_cover_name = 'storage/records/' . $imageName;
-        }
-
-        // Validate the incoming request data to ensure it meets the specified rules
-        $request->validate([
-            'title' => 'required',
-            'artist' => 'required',
-            'genre' => 'required',
-            'isbn' => 'required',
-            'release_year' => 'required|date|before:2100-01-01',
-            'description' => 'required|max:500',
-            'record_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'label_id' => 'required',
-            'artists' => ['required', 'exists:artists,id']
-        ]);
-
-        // Create a new Record model instance and populate it with the validated data
-        Record::create([
-            'title' => $request->title,
-            'artist' => $request->artist,
-            'genre' => $request->genre,
-            'isbn' => $request->isbn,
-            'release_year' => $request->release_year,
-            'description' => $request->description,
-            'record_cover' => $record_cover_name,
-            'label_id' => $request->label_id,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        // Redirect to the 'records.index' route with a success message
-        return to_route('admin.records.index')->with('success', 'Record created successfully');
+         // Store the uploaded image in the 'public/records' directory with a unique name
+        $imageName = time() . '.' . $image->extension();
+        $image->storeAs('public/records', $imageName);
+        $record_cover_name = 'storage/records/' . $imageName;
     }
+
+    // Validate the incoming request data to ensure it meets the specified rules
+    $request->validate([
+        'title' => 'required',
+        'artist' => 'required',
+        'genre' => 'required',
+        'isbn' => 'required',
+        'release_year' => 'required|date|before:2100-01-01',
+        'description' => 'required|max:500',
+        'record_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'label_id' => 'required',
+        'artists' => ['required', 'exists:artists,id']
+    ]);
+
+    // Create a new Record model instance and populate it with the validated data
+    $record = Record::create([
+        'title' => $request->title,
+        'artist' => $request->artist,
+        'genre' => $request->genre,
+        'isbn' => $request->isbn,
+        'release_year' => $request->release_year,
+        'description' => $request->description,
+        'record_cover' => $record_cover_name,
+        'label_id' => $request->label_id,
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
+
+    // Associate the record with artists based on the many-to-many relationship
+    $record->artists()->attach($request->artists);
+
+    // Redirect to the 'records.index' route with a success message
+    return redirect()->route('admin.records.index')->with('success', 'Record created successfully');
+}
+
 
     public function show($id)
     {
@@ -110,7 +115,8 @@ class RecordController extends Controller
 
         // Return a view for editing an existing record and pass the record to it
         $labels = Label::all();
-        return view('admin.records.edit', compact('record', 'labels'));
+        $artists = Artist::all();
+        return view('admin.records.edit', compact('record', 'labels', 'artists'));
     }
 
     public function update(Request $request, Record $record)
@@ -121,7 +127,7 @@ class RecordController extends Controller
         // Validate the incoming request data for updating a record
         $request->validate([
             'title' => 'required',
-            'artist' => 'required',
+            // 'artist' => 'required',
             'genre' => 'required',
             'isbn' => 'required',
             'release_year' => 'required|date|before:2100-12-31',
@@ -143,7 +149,7 @@ class RecordController extends Controller
         // Update the record with the new data
         $record->update([
             'title' => $request->title,
-            'artist' => $request->artist,
+            // 'artist' => $request->artist,
             'genre' => $request->genre,
             'isbn' => $request->isbn,
             'release_year' => $request->release_year,
@@ -151,6 +157,8 @@ class RecordController extends Controller
             'record_cover' => $record_cover_name,
             'label_id' => $request->label_id,
         ]);
+
+        $record->artists()->attach($request->artists);
 
         // Redirect to the 'records.show' route with a success message
         return redirect()->route('admin.records.show', $record)->with('success', 'Record updated successfully');
