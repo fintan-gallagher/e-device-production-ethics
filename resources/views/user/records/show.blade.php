@@ -27,10 +27,6 @@
                                 <td>{{ $record->title }}</td>
                             </tr>
                             <tr>
-                                <td class="font-bold ">Artist</td>
-                                <td>{{ $record->artist }}</td>
-                            </tr>
-                            <tr>
                                 <td class="font-bold">Description</td>
                                 <td>{{ $record->description }}</td>
                             </tr>
@@ -50,6 +46,13 @@
                                 <td class="font-bold ">ISBN</td>
                                 <td>{{ $record->isbn }}</td>
                             </tr>
+
+                            @foreach ($record->artists as $artist)
+
+                                <p class="font-bold ">Artist</p>
+                                <a href="{{ route('user.artists.show', $artist)  }}" > <p>{{ $artist->name }}</p>
+
+                            @endforeach
                         </tbody>
                     </table>
 

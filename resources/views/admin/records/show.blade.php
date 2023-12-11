@@ -27,10 +27,6 @@
                                 <td>{{ $record->title }}</td>
                             </tr>
                             <tr>
-                                <td class="font-bold ">Artist</td>
-                                <td>{{ $record->artist }}</td>
-                            </tr>
-                            <tr>
                                 <td class="font-bold">Description</td>
                                 <td>{{ $record->description }}</td>
                             </tr>
@@ -43,9 +39,10 @@
                                 <td>{{ $record->release_year }}</td>
                             </tr>
                             <tr>
-                                <td class="font-bold ">Label</td>
+                                <td class="font-bold">Label</td>
                                 <td>{{ $record->label->name }}</td>
                             </tr>
+
                             <tr>
                                 <td class="font-bold ">ISBN</td>
                                 <td>{{ $record->isbn }}</td>
@@ -58,7 +55,7 @@
                                 <a href="{{ route('admin.artists.show', $artist)  }}" > <p>{{ $artist->name }}</p>
 
                         @endforeach
-                        
+
 
                     <x-primary-button><a href="{{ route('admin.records.edit', $record) }}">Edit</a></x-primary-button>
 

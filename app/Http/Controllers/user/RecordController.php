@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Record;
+use App\Models\Label;
+use App\Models\Artist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

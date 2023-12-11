@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Artist;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ArtistController extends Controller
@@ -12,54 +14,41 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $user->authorizeRoles('user');
+
+        // Retrieve all records from the 'records' table in the database
+        $artists = Artist::all();
+        // $records = Record::paginate(5);
+        // Return a view called 'records.index' and pass the retrieved records to it
+        return view('user.artists.index')->with('artists', $artists);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function home()
     {
-        //
-    }
+        // Return a view called 'home' (This might be your application's homepage)
+        $user = Auth::user();
+        $user->authorizeRoles('user');
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return view('user.artists.welcome');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Artist $artist)
     {
-        //
-    }
+        $user = Auth::user();
+        $user->authorizeRoles('user');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if ( !Auth::id()) {
+            return abort(403);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        // Find a record in the database by its ID
+        $records = $artist->records;
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Return a view called 'records.show' and pass the found record to it
+        return view('user.artists.show', compact('artist', 'records'));
     }
 }

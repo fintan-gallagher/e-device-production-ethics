@@ -22,20 +22,14 @@
 
             @forelse ($records as $record)
                 <x-card>
-                     <a href="{{ route('admin.records.show', $record) }}" class="font-bold text-2xl">{{ $record->title }}</a>
+                     <a href="{{ route('user.records.show', $record) }}" class="font-bold text-2xl">{{ $record->title }}</a>
 
                 </x-card>
             @empty
                 <p>No records for this artist</p>
             @endforelse
 
-            <x-primary-button><a href="{{ route('admin.artists.edit', $artist) }}">Edit</a></x-primary-button>
-
-                    <form action="{{ route('admin.artists.destroy', $artist) }}" method="post">
-                    @method('delete')
-                    @csrf
-                    <x-primary-button onclick="return confirm('Are you sure you want to delete this artist?')">Delete</x-primary-button>
-                    </form>
+            
 
         </div>
     </div>

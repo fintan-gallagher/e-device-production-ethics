@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Artist;
+use App\Models\Record;
+use App\Models\Label;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -30,7 +32,14 @@ class ArtistController extends Controller
      */
     public function create()
     {
-        //
+        // Return a view for creating a new record (likely a form)
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        $labels = Label::all();
+        $records = Record::all();
+
+        return view('admin.artists.create')->with('labels', $labels)->with('records', $records);
     }
 
     /**
@@ -38,7 +47,42 @@ class ArtistController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        // Check if a file with the name 'record_cover' is present in the request
+        if ($request->hasFile('record_cover')) {
+            $image = $request->file('record_cover');
+
+             // Store the uploaded image in the 'public/records' directory with a unique name
+            $imageName = time() . '.' . $image->extension();
+            $image->storeAs('public/records', $imageName);
+            $record_cover_name = 'storage/records/' . $imageName;
+        }
+
+        // Validate the incoming request data to ensure it meets the specified rules
+        $request->validate([
+            'name' => 'required',
+            'social_media' => 'required',
+            'email' => 'required',
+            'bio' => 'required',
+            // 'record_id' => 'required'
+        ]);
+
+        // Create a new Record model instance and populate it with the validated data
+        $artist = Artist::create([
+            'name' => $request->name,
+            'social_media' => $request->social_media,
+            'email' => $request->email,
+            'bio' => $request->bio,
+            // 'record_id' => $request->record_id,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $artist->records()->attach($request->records);
+        // Redirect to the 'records.index' route with a success message
+        return to_route('admin.artists.index')->with('success', 'Artist created successfully');
     }
 
     /**
@@ -57,24 +101,63 @@ class ArtistController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Artist $artist)
     {
-        //
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        // Return a view for editing an existing record and pass the record to it
+        $labels = Label::all();
+        $records = Record::all();
+        return view('admin.artists.edit', compact('artist', 'labels', 'records'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Artist $artist)
     {
-        //
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        // Validate the incoming request data for updating a record
+        $request->validate([
+            'name' => 'required',
+            'social_media' => 'required',
+            'email' => 'required',
+            'bio' => 'required',
+        ]);
+
+
+        // Update the record with the new data
+        $artist->update([
+            'name' => $request->name,
+            'social_media' => $request->social_media,
+            'email' => $request->email,
+            'bio' => $request->bio,
+            // 'label_id' => $request->label_id,
+        ]);
+
+        // Redirect to the 'records.show' route with a success message
+        return redirect()->route('admin.artists.show', $artist)->with('success', 'Artist updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Artist $artist)
     {
-        //
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        // Find and delete related records in artist_record table
+        $artist->records()->detach();
+
+        // Delete the specified artist record from the database
+        $artist->delete();
+
+        // Redirect to the 'admin.artists.index' route with a success message
+        return redirect()->route('admin.artists.index')->with('success', 'Artist deleted successfully');
     }
+
 }
