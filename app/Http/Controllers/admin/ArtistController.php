@@ -116,31 +116,42 @@ class ArtistController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Artist $artist)
-    {
-        $user = Auth::user();
-        $user->authorizeRoles('admin');
+{
+    $user = Auth::user();
+    $user->authorizeRoles('admin');
 
-        // Validate the incoming request data for updating a record
-        $request->validate([
-            'name' => 'required',
-            'social_media' => 'required',
-            'email' => 'required',
-            'bio' => 'required',
-        ]);
+    // Validate the incoming request data for updating an artist
+    $request->validate([
+        'name' => 'required',
+        'social_media' => 'required',
+        'email' => 'required',
+        'bio' => 'required',
+        'records' => 'array', // Assuming 'records' is an array in the form
+    ]);
 
+    // Update the artist with the new data
+    $artist->update([
+        'name' => $request->name,
+        'social_media' => $request->social_media,
+        'email' => $request->email,
+        'bio' => $request->bio,
+    ]);
 
-        // Update the record with the new data
-        $artist->update([
-            'name' => $request->name,
-            'social_media' => $request->social_media,
-            'email' => $request->email,
-            'bio' => $request->bio,
-            // 'label_id' => $request->label_id,
-        ]);
+    // Update the associated records
+    if ($request->has('records')) {
+        $recordIds = $request->input('records');
 
-        // Redirect to the 'records.show' route with a success message
-        return redirect()->route('admin.artists.show', $artist)->with('success', 'Artist updated successfully');
+        // Sync the associated records
+        $artist->records()->sync($recordIds);
+    } else {
+        // If no records are provided, detach all existing records
+        $artist->records()->detach();
     }
+
+    // Redirect to the 'artists.show' route with a success message
+    return redirect()->route('admin.artists.show', $artist)->with('success', 'Artist updated successfully');
+}
+
 
     /**
      * Remove the specified resource from storage.

@@ -169,10 +169,13 @@ class RecordController extends Controller
         $user = Auth::user();
         $user->authorizeRoles('admin');
 
-        // Delete the specified record from the database
+        // Find and delete related records in record_record table
+        $record->artists()->detach();
+
+        // Delete the specified record record from the database
         $record->delete();
 
-        // Redirect to the 'records.index' route with a success message
-        return to_route('admin.records.index')->with('success', 'Record deleted successfully');
+        // Redirect to the 'admin.records.index' route with a success message
+        return redirect()->route('admin.records.index')->with('success', 'Record deleted successfully');
     }
 }

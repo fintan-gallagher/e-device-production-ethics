@@ -15,6 +15,7 @@
             <p class="text-gray-700"><span class="font-bold">Name:</span> {{ $artist->name }}</p>
             <p class="text-gray-700"><span class="font-bold">Social Media:</span> {{ $artist->social_media }}</p>
             <p class="text-gray-700"><span class="font-bold">Email:</span> {{ $artist->email }}</p>
+            <p class="text-gray-700"><span class="font-bold">Biography:</span> {{ $artist->bio }}</p>
 
             <!-- Display records for the publisher -->
 
@@ -29,7 +30,7 @@
                 <p>No records for this artist</p>
             @endforelse
 
-            
+
 
         </div>
     </div>

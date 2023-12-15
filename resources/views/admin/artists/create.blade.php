@@ -39,13 +39,13 @@
                         :value="@old('email')"></x-text-input>
 
                     {{-- Text Input for ISBN --}}
-                    <x-text-input
+                    <x-textarea
                         type="text"
                         name="bio"
                         field="bio"
                         placeholder="Biography..."
                         class="w-full mt-6"
-                        :value="@old('bio')"></x-text-input>
+                        :value="@old('bio')"></x-textarea>
 
 
 

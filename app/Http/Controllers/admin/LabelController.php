@@ -144,10 +144,20 @@ public function update(Request $request, Label $label)
         // ... other fields ...
     ]);
 
+    // Update the associated records
+    foreach ($request->input('records', []) as $recordId) {
+        // Assuming you have a Record model
+        $record = Record::find($recordId);
+
+        // Update the record with the new label_id
+        $record->update(['label_id' => $label->id]);
+    }
+
     // Redirect back to the index page with a success message
     return redirect()->route('admin.labels.index', $label)
         ->with('success', 'Label updated successfully.');
 }
+
 
 
 
