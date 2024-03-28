@@ -3,14 +3,14 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\admin\RecordController as AdminRecordController;
-use App\Http\Controllers\user\RecordController as UserRecordController;
+use App\Http\Controllers\admin\DeviceController;
 
-use App\Http\Controllers\admin\LabelController as AdminLabelController;
-use App\Http\Controllers\user\LabelController as UserLabelController;
+use App\Http\Controllers\admin\DeviceController as AdminDeviceController;
+use App\Http\Controllers\user\DeviceController as UserDeviceController;
 
-use App\Http\Controllers\admin\ArtistController as AdminArtistController;
-use App\Http\Controllers\user\ArtistController as UserArtistController;
+use App\Http\Controllers\admin\ManufacturerController as AdminManufacturerController;
+use App\Http\Controllers\user\ManufacturerController as UserManufacturerController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +28,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Define a resourceful route for managing 'records' using the 'RecordController'
-// Route::resource('/records', AdminRecordController::class);
+// Define a resourceful route for managing 'devices' using the 'DeviceController'
+// Route::resource('/devices', AdminDeviceController::class);
 
 // Define a route to access the 'dashboard' view, which is protected by the 'auth' and 'verified' middleware
 Route::get('/dashboard', function () {
@@ -48,13 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('/admin/records', AdminRecordController::class)->middleware(['auth'])->names('admin.records');
-Route::resource('/user/records', UserRecordController::class)->middleware(['auth'])->names('user.records')->only(['index', 'show']);
+Route::resource('/admin/devices', AdminDeviceController::class)->middleware(['auth'])->names('admin.devices');
+Route::resource('/user/devices', UserDeviceController::class)->middleware(['auth'])->names('user.devices')->only(['index', 'show']);
 
-Route::resource('admin/labels', AdminLabelController::class)->middleware(['auth'])->names('admin.labels');
-Route::resource('user/labels', UserLabelController::class)->middleware(['auth'])->names('user.labels')->only(['index', 'show']);
+Route::resource('admin/manufacturers', AdminManufacturerController::class)->middleware(['auth'])->names('admin.manufacturers');
+Route::resource('user/manufacturers', UserManufacturerController::class)->middleware(['auth'])->names('user.manufacturers')->only(['index', 'show']);
 
-Route::resource('/admin/artists', AdminArtistController::class)->middleware(['auth'])->names('admin.artists');
-Route::resource('/user/artists', UserArtistController::class)->middleware(['auth'])->names('user.artists')->only(['index', 'show']);
+// Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');
 // Include routes defined in the 'auth.php' file, which handles authentication routes
 require __DIR__.'/auth.php';

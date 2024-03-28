@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Fintan's Record Store</title>
+        <title>Production Ethics in E-Device Production</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -34,11 +34,11 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Fintan's Record Store.</div>
+                            <div class="card-header">Production Ethics in E-Device Production</div>
 
                             <div class="card-body">
                                 <p>
-                                    Welcome to Fintan's record store
+                                    Production Ethics in E-Device Production
                                 </p>
                             </div>
 

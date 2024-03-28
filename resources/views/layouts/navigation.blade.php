@@ -18,50 +18,40 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @if(auth()->user()->hasRole('admin'))
-                        <x-nav-link :href="route('admin.records.index')" :active="request()->routeIs('admin.records.index')">
-                            {{ __('All Records') }}
+                        <x-nav-link :href="route('admin.devices.index')" :active="request()->routeIs('admin.devices.index')">
+                            {{ __('All Devices') }}
                         </x-nav-link>
                     @elseif(auth()->user()->hasRole('user'))
-                        <x-nav-link :href="route('user.records.index')" :active="request()->routeIs('user.records.index')">
-                            {{ __('All Records') }}
+                        <x-nav-link :href="route('user.devices.index')" :active="request()->routeIs('user.devices.index')">
+                            {{ __('All Devices') }}
                         </x-nav-link>
                     @else
-                        <x-nav-link :href="route('records.index')" :active="request()->routeIs('records.index')">
-                            {{ __('All Records') }}
+                        <x-nav-link :href="route('devices.index')" :active="request()->routeIs('devices.index')">
+                            {{ __('All Devices') }}
                         </x-nav-link>
                     @endif
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @if(auth()->user()->hasRole('admin'))
-                        <x-nav-link :href="route('admin.records.create')" :active="request()->routeIs('admin.records.create')">
-                            {{ __('Create Record') }}
+                        <x-nav-link :href="route('admin.devices.create')" :active="request()->routeIs('admin.devices.create')">
+                            {{ __('Create Device') }}
                         </x-nav-link>
 
                     @endif
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @if(auth()->user()->hasRole('admin'))
-                        <x-nav-link :href="route('admin.labels.index')" :active="request()->routeIs('admin.records.index')">
-                            {{ __('Labels') }}
+                        <x-nav-link :href="route('admin.manufacturers.index')" :active="request()->routeIs('admin.devices.index')">
+                            {{ __('Manufacturers') }}
                         </x-nav-link>
                     @elseif(auth()->user()->hasRole('user'))
-                        <x-nav-link :href="route('user.labels.index')" :active="request()->routeIs('user.records.index')">
-                            {{ __('Labels') }}
+                        <x-nav-link :href="route('user.manufacturers.index')" :active="request()->routeIs('user.devices.index')">
+                            {{ __('Manufacturers') }}
                         </x-nav-link>
                     @endif
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @if(auth()->user()->hasRole('admin'))
-                        <x-nav-link :href="route('admin.artists.index')" :active="request()->routeIs('admin.records.index')">
-                            {{ __('Artists') }}
-                        </x-nav-link>
-                    @elseif(auth()->user()->hasRole('user'))
-                        <x-nav-link :href="route('user.artists.index')" :active="request()->routeIs('user.records.index')">
-                            {{ __('Artists') }}
-                        </x-nav-link>
-                    @endif
-                </div>
+                
 
 
             <!-- Settings Dropdown -->

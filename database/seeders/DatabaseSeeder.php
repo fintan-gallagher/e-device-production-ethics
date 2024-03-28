@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Record;
+use App\Models\Device;
 use Database\Seeders\RoleSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,18 +16,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Record::factory()->count(10)->create();
+        // Device::factory()->count(10)->create();
         // $this->call(RoleSeeder::class);
         // $this->call(UserSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-        //I only need to call the LabelSeeder, this calls hasRecords()
-        //which seeds the records table with 20 records for each Label
-        $this->call(LabelSeeder::class);
+        //I only need to call the LabelSeeder, this calls hasDevices()
+        //which seeds the devices table with 20 devices for each Label
+        $this->call(ManufacturerSeeder::class);
 
-        $this->call(ArtistSeeder::class);
+        
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
