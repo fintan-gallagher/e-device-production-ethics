@@ -12,47 +12,47 @@
                     @method('put')
                     @csrf
 
-                    <p>Title</p>
+                    <p>Model</p>
 
                     <x-text-input
                         type="text"
-                        name="title"
-                        field="title"
-                        placeholder="Title"
+                        name="model"
+                        field="model"
+                        placeholder="Model"
                         class="w-full"
                         autocomplete="off"
-                        :value="@old('title', $device->title)"
+                        :value="@old('model', $device->model)"
                     ></x-text-input>
 
-                    <p>Artist</p>
+                    <p>Repairability</p>
 
                     <x-text-input
                         type="text"
-                        name="artist"
-                        field="artist"
-                        placeholder="Artist..."
+                        name="repairability"
+                        field="repairability"
+                        placeholder="Repairability..."
                         class="w-full mt-6"
-                        :value="@old('artist', $device->artist)"
+                        :value="@old('repairability', $device->repairability)"
                     ></x-text-input>
 
                     <x-genre-dropdown
                         type="text"
-                        name="genre"
-                        field="genre"
-                        placeholder="Genre..."
+                        name="parts_availability"
+                        field="parts_availability"
+                        placeholder="Are Parts Available..."
                         class="w-full mt-6"
-                        :value="@old('genre', $device->genre)"
+                        :value="@old('parts_availability', $device->parts_availability)"
                     ></x-genre-dropdown>
 
-                    <p>ISBN</p>
+                    <p>Recycled?</p>
 
                     <x-text-input
                         type="text"
-                        name="isbn"
-                        field="isbn"
-                        placeholder="ISBN..."
+                        name="recycled"
+                        field="recycled"
+                        placeholder="Recyclability Score..."
                         class="w-full mt-6"
-                        :value="@old('isbn', $device->isbn)"
+                        :value="@old('recycled', $device->recycled)"
                     ></x-text-input>
 
                     <p>Release Date</p>
@@ -66,20 +66,51 @@
                         :value="@old('release_year', $device->release_year)"
                     ></x-date-input>
 
-                    <p>Description</p>
+                    <p>Price</p>
 
-                    <x-textarea
-                        name="description"
-                        rows="10"
-                        field="description"
-                        placeholder="Description..."
+                    <x-text-input
+                        type="text"
+                        name="price"
+                        field="price"
+                        placeholder="Price..."
                         class="w-full mt-6"
-                        :value="@old('description', $device->description)"
-                    ></x-textarea>
+                        :value="@old('price', $device->price)"
+                    ></x-text-input>
 
                      <div class="mt-6">
                         <x-select-manufacturer name="manufacturer_id" :manufacturers="$manufacturers" :selected="old('manufacturer_id')"/>
                     </div>
+
+
+
+
+                        <div id="repairGuides">
+                            <!-- This is where new repair guide input fields will be added -->
+                        </div>
+
+                        <x-primary-button type="button" id="addRepairGuide">Add Repair Guide</x-primary-button>
+
+                        <script>
+                            document.getElementById('addRepairGuide').addEventListener('click', function() {
+                                var repairGuides = document.getElementById('repairGuides');
+                                var newInput = document.createElement('input');
+                                newInput.type = 'text';
+                                newInput.name = 'new_repair_guides[]';
+                                newInput.placeholder = 'Repair Guide URL';
+                                repairGuides.appendChild(newInput);
+                            });
+
+                        </script>
+
+
+                        <h2>Remove Repair Guides</h2>
+
+                        @foreach($device->repairGuides as $repairGuide)
+                        <div>
+                            <input type="checkbox" id="remove_repair_guide_{{ $repairGuide->id }}" name="remove_repair_guides[]" value="{{ $repairGuide->id }}">
+                            <label for="remove_repair_guide_{{ $repairGuide->id }}">{{ $repairGuide->guide }}</label>
+                        </div>
+                        @endforeach
 
                     <x-file-input
                         type="file"

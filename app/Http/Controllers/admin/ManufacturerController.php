@@ -53,7 +53,9 @@ class ManufacturerController extends Controller
     $request->validate([
         'name' => 'required',
         'address' => 'required',
-        'email' => 'required',
+        'email' => 'required|email',
+        'ethics_score' => 'required|numeric|between:0,100',
+        'bio' => 'required|max:1000'
     ]);
 
     // Create a new manufacturer
@@ -61,6 +63,8 @@ class ManufacturerController extends Controller
         'name' => $request->input('name'),
         'address' => $request->input('address'),
         'email' => $request->input('email'),
+        'ethics_score' => $request->input('ethics_score'),
+        'bio' => $request->input('bio')
     ]);
 
     // Get the selected devices from the form
@@ -130,10 +134,11 @@ public function update(Request $request, Manufacturer $manufacturer)
 
     // Validate the form data...
     $request->validate([
-        'name' => 'required|string|max:255',
-        'address' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        // ... other validation rules ...
+        'name' => 'required',
+        'address' => 'required',
+        'email' => 'required|email',
+        'ethics_score' => 'required|numeric|between:0,100',
+        'bio' => 'required|max:1000'
     ]);
 
     // Update the manufacturer
@@ -141,11 +146,23 @@ public function update(Request $request, Manufacturer $manufacturer)
         'name' => $request->input('name'),
         'address' => $request->input('address'),
         'email' => $request->input('email'),
+        'ethics_score' => $request->input('ethics_score'),
+        'bio' => $request->input('bio')
         // ... other fields ...
     ]);
 
-    // Update the associated devices
-    foreach ($request->input('devices', []) as $deviceId) {
+    // Get the IDs of the selected devices from the request
+    $selectedDevices = $request->input('devices', []);
+
+    // Disassociate any devices that are not included in the submitted form
+    foreach ($manufacturer->devices as $device) {
+        if (!in_array($device->id, $selectedDevices)) {
+            $device->update(['manufacturer_id' => null]);
+        }
+    }
+
+    // Associate the selected devices with the manufacturer
+    foreach ($selectedDevices as $deviceId) {
         // Assuming you have a Device model
         $device = Device::find($deviceId);
 

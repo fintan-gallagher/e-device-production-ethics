@@ -24,13 +24,13 @@
                         <a href="{{ route('admin.manufacturers.show', $manufacturer) }}" class="font-bold text-2xl">{{ $manufacturer->name }}</a>
 
                         <p class="mt-2 text-gray-700">
-                            <span class="font-bold">ID:</span> {{ $manufacturer->id }}
-                        </p>
-                        <p class="mt-2 text-gray-700">
                             <span class="font-bold">Name:</span> {{ $manufacturer->name }}
                         </p>
                         <p class="mt-2 text-gray-700">
                             <span class="font-bold">Address:</span> {{ $manufacturer->address }}
+                        </p>
+                        <p class="mt-2 text-gray-700">
+                            <span class="font-bold">Ethics Score:</span> {{ $manufacturer->ethics_score }}
                         </p>
 
                 </x-card>

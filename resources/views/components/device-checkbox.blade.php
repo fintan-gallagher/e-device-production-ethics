@@ -3,6 +3,6 @@
 <div>
     <label for="device_{{ $device->id }}">
         <input type="checkbox" id="device_{{ $device->id }}" name="devices[]" value="{{ $device->id }}" {{ $checked ? 'checked' : '' }}>
-        {{ $device->title }}
+        {{ $device->model }}
     </label>
 </div>

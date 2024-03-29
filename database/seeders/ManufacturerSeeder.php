@@ -18,6 +18,7 @@ class ManufacturerSeeder extends Seeder
         Manufacturer::factory()
         ->times(3)
         ->hasDevices(4)
+        ->hasSustainables(4)
         ->create();
     }
 }

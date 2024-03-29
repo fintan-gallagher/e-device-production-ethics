@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('artist');
-            $table->string('genre');
-            $table->string('isbn');
+            $table->string('model');
+            $table->string('repairability');
+            $table->string('parts_availability');
+            $table->string('recycled');
             $table->date('release_year');
-            $table->text('description');
+            $table->text('price');
             $table->string('device_cover');
             $table->timestamps();
         });

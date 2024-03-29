@@ -1,9 +1,8 @@
 <div>
-    <label for="genre" class="block font-medium text-sm text-gray-700">Genre</label>
-    <select name="genre" id="genre" class="form-select mt-1 block w-full">
-        <option value="Bedroom Pop">Bedroom Pop</option>
-        <option value="Glitch">Glitch</option>
-        <option value="Hip-Hop">Hip-Hop</option>
+    <label for="parts_availability" class="block font-medium text-sm text-gray-700">Parts Available?</label>
+    <select name="parts_availability" id="parts_availability" class="form-select mt-1 block w-full">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
     </select>
 
     @error($field)

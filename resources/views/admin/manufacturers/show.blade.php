@@ -14,6 +14,8 @@
             <p class="text-gray-700"><span class="font-bold">Name:</span> {{ $manufacturer->name }}</p>
             <p class="text-gray-700"><span class="font-bold">Address:</span> {{ $manufacturer->address }}</p>
             <p class="text-gray-700"><span class="font-bold">Email:</span> {{ $manufacturer->email }}</p>
+            <p class="text-gray-700"><span class="font-bold">Ethics Score:</span> {{ $manufacturer->ethics_score }}</p>
+            <p class="text-gray-700"><span class="font-bold">Biography:</span> {{ $manufacturer->bio }}</p>
 
             <!-- Display books for the publisher -->
 
@@ -21,7 +23,7 @@
 
             @forelse ($devices as $device)
                 <x-card>
-                     <a href="{{ route('admin.devices.show', $device) }}" class="font-bold text-2xl">{{ $device->title }}</a>
+                     <a href="{{ route('admin.devices.show', $device) }}" class="font-bold text-2xl">{{ $device->model }}</a>
                 </x-card>
             @empty
                 <p>No devices for this manufacturer</p>

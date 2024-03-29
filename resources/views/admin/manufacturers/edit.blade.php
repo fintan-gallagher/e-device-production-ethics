@@ -45,6 +45,28 @@
                         :value="@old('email', $manufacturerWithDevices->email)"
                     ></x-text-input>
 
+                    <p>Ethics Score</p>
+                    <x-text-input
+                        type="text"
+                        name="ethics_score"
+                        field="ethics_score"
+                        placeholder="Ethics Score..."
+                        class="w-full mt-6"
+                        :value="@old('ethics_score', $manufacturerWithDevices->ethics_score)"
+                    ></x-text-input>
+
+                    <p>Biography</p>
+                    <x-textarea
+                        type="text"
+                        name="bio"
+                        field="bio"
+                        placeholder="Biography..."
+                        class="w-full mt-6"
+                        :value="@old('bio', $manufacturerWithDevices->bio)"
+                    ></x-textarea>
+
+
+
                     <p>Select Devices</p>
                         @foreach ($allDevices as $device)
                             <x-device-checkbox :device="$device" :checked="$manufacturerWithDevices->devices->contains($device)" />

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 use App\Models\Device;
+use App\Models\RepairGuide;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +18,18 @@ class DeviceController extends Controller
         $user = Auth::user();
         $user->authorizeRoles('admin');
 
-        // Retrieve all devices from the 'devices' table in the database
-        // $devices = Device::all();
-        // $devices = Device::paginate(5);
-        $devices = Device::with('manufacturer')->get();
+        // Retrieve the search query from the request
+        $search = request('search');
+
+        // Retrieve all devices from the 'devices' table in the database that match the search query
+        $devices = Device::with('manufacturer')
+            ->when($search, function ($query, $search) {
+                $query->where('model', 'like', "%{$search}%")
+                    ->orWhereHas('manufacturer', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->get();
 
         // Return a view called 'devices.index' and pass the retrieved devices to it
         return view('admin.devices.index')->with('devices', $devices);
@@ -48,62 +57,72 @@ class DeviceController extends Controller
     }
 
     public function store(Request $request)
-{
-    $user = Auth::user();
-    $user->authorizeRoles('admin');
-
-    // Check if a file with the name 'device_cover' is present in the request
-    if ($request->hasFile('device_cover')) {
-        $image = $request->file('device_cover');
-
-         // Store the uploaded image in the 'public/devices' directory with a unique name
-        $imageName = time() . '.' . $image->extension();
-        $image->storeAs('public/devices', $imageName);
-        $device_cover_name = 'storage/devices/' . $imageName;
-    }
-
-    // Validate the incoming request data to ensure it meets the specified rules
-    $request->validate([
-        'title' => 'required',
-        'artist' => 'required',
-        'genre' => 'required',
-        'isbn' => 'required',
-        'release_year' => 'required|date|before:2100-01-01',
-        'description' => 'required|max:500',
-        'device_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'manufacturer_id' => 'required',
-    ]);
-
-    // Create a new Device model instance and populate it with the validated data
-    $device = Device::create([
-        'title' => $request->title,
-        'artist' => $request->artist,
-        'genre' => $request->genre,
-        'isbn' => $request->isbn,
-        'release_year' => $request->release_year,
-        'description' => $request->description,
-        'device_cover' => $device_cover_name,
-        'manufacturer_id' => $request->manufacturer_id,
-        'created_at' => now(),
-        'updated_at' => now()
-    ]);
-
-
-
-    // Redirect to the 'devices.index' route with a success message
-    return redirect()->route('admin.devices.index')->with('success', 'Device created successfully');
-}
-
-
-    public function show($id)
     {
         $user = Auth::user();
         $user->authorizeRoles('admin');
 
+        // Check if a file with the name 'device_cover' is present in the request
+        if ($request->hasFile('device_cover')) {
+            $image = $request->file('device_cover');
+
+            // Store the uploaded image in the 'public/devices' directory with a unique name
+            $imageName = time() . '.' . $image->extension();
+            $image->storeAs('public/devices', $imageName);
+            $device_cover_name = 'storage/devices/' . $imageName;
+        }
+
+        // Validate the incoming request data to ensure it meets the specified rules
+        $request->validate([
+            'model' => 'required',
+            'repairability' => 'required|numeric|between:0,100',
+            'parts_availability' => 'required|in:yes,no',
+            'recycled' => 'required|numeric|between:0,100',
+            'release_year' => 'required|date|before:2100-01-01',
+            'price' => 'required|numeric|between:0,4500',
+            'device_cover' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'manufacturer_id' => 'required',
+            'new_repair_guides.*' => 'required|url',
+        ]);
+
+        // Create a new Device model instance and populate it with the validated data
+        $device = Device::create([
+            'model' => $request->model,
+            'repairability' => $request->repairability,
+            'parts_availability' => $request->parts_availability,
+            'recycled' => $request->recycled,
+            'release_year' => $request->release_year,
+            'price' => $request->price,
+            'device_cover' => $device_cover_name,
+            'manufacturer_id' => $request->manufacturer_id,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Create new repair guides
+        if ($request->has('new_repair_guides')) {
+            foreach ($request->input('new_repair_guides') as $guide) {
+                $device->repairGuides()->create(['guide' => $guide]);
+            }
+        }
+
+        // Redirect to the 'devices.index' route with a success message
+        return redirect()->route('admin.devices.index')->with('success', 'Device created successfully');
+    }
+
+
+    public function show(Device $device)
+    {
+        $user = Auth::user();
+        $user->authorizeRoles('admin');
+
+        if (!Auth::id()) {
+            return abort(403);
+        }
+
         // Find a device in the database by its ID
-        $device = Device::find($id);
+        $repairguides = $device->repairguides;
         // Return a view called 'devices.show' and pass the found device to it
-        return view('admin.devices.show')->with('device', $device);
+        return view('admin.devices.show', compact('device', 'repairguides'));
     }
 
     public function edit(Device $device)
@@ -124,13 +143,14 @@ class DeviceController extends Controller
 
         // Validate the incoming request data for updating a device
         $request->validate([
-            'title' => 'required',
-            'artist' => 'required',
-            'genre' => 'required',
-            'isbn' => 'required',
-            'release_year' => 'required|date|before:2100-12-31',
-            'description' => 'required|max:500',
-            'device_cover' => 'nullable|image'
+            'model' => 'required',
+            'repairability' => 'required|numeric|between:0,100',
+            'parts_availability' => 'required|in:yes,no',
+            'recycled' => 'required|numeric|between:0,100',
+            'release_year' => 'required|date|before:2100-01-01',
+            'price' => 'required|numeric|between:0,4500',
+            'device_cover' => 'nullable|image',
+            'new_repair_guides.*' => 'required|url',
         ]);
 
         // Initialize the 'device_cover_name' variable with the current device's image path
@@ -146,17 +166,31 @@ class DeviceController extends Controller
 
         // Update the device with the new data
         $device->update([
-            'title' => $request->title,
-            'artist' => $request->artist,
-            'genre' => $request->genre,
-            'isbn' => $request->isbn,
+            'model' => $request->model,
+            'repairability' => $request->repairability,
+            'parts_availability' => $request->parts_availability,
+            'recycled' => $request->recycled,
             'release_year' => $request->release_year,
-            'description' => $request->description,
+            'price' => $request->price,
             'device_cover' => $device_cover_name,
             'manufacturer_id' => $request->manufacturer_id,
         ]);
 
-        
+        // Create new repair guides
+        if ($request->has('new_repair_guides')) {
+            foreach ($request->input('new_repair_guides') as $guide) {
+                $device->repairGuides()->create(['guide' => $guide]);
+            }
+        }
+
+        // Remove repair guides
+        if ($request->has('remove_repair_guides')) {
+            foreach ($request->input('remove_repair_guides') as $guideId) {
+                RepairGuide::find($guideId)->delete();
+            }
+        }
+
+
 
         // Redirect to the 'devices.show' route with a success message
         return redirect()->route('admin.devices.show', $device)->with('success', 'Device updated successfully');
@@ -167,8 +201,8 @@ class DeviceController extends Controller
         $user = Auth::user();
         $user->authorizeRoles('admin');
 
-        // Find and delete related devices in device_device table
-        // $device->artists()->detach();
+        // Delete the repair guides associated with the device
+        $device->repairGuides()->delete();
 
         // Delete the specified device device from the database
         $device->delete();

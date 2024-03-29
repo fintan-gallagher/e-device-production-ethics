@@ -37,6 +37,22 @@
                         class="w-full mt-6"
                         :value="@old('email')"></x-text-input>
 
+                        <x-text-input
+                        type="text"
+                        name="ethics_score"
+                        field="ethics_score"
+                        placeholder="Ethics Score..."
+                        class="w-full mt-6"
+                        :value="@old('ethics_score')"></x-text-input>
+
+                        <x-textarea
+                        type="text"
+                        name="bio"
+                        field="bio"
+                        placeholder="Biography..."
+                        class="w-full mt-6"
+                        :value="@old('bio')"></x-textarea>
+
                        <p>Select Devices</p>
                         @foreach ($allDevices as $device)
                             <x-device-checkbox :device="$device" :checked="false" />

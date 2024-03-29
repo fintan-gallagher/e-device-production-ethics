@@ -11,12 +11,12 @@ class Device extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'artist',
-        'genre',
-        'isbn',
+        'model',
+        'repairability',
+        'parts_availability',
+        'recycled',
         'release_year',
-        'description',
+        'price',
         'device_cover',
         'manufacturer_id'
     ];
@@ -26,5 +26,15 @@ class Device extends Model
         return $this->belongsTo(Manufacturer::class);
     }
 
-    
+    public function repairGuides()
+    {
+        return $this->hasMany(RepairGuide::class);
+    }
+
+    public function parts()
+    {
+        return $this->hasMany(Part::class);
+    }
+
+
 }

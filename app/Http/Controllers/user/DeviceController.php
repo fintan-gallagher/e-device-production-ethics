@@ -16,10 +16,19 @@ class DeviceController extends Controller
         $user = Auth::user();
         $user->authorizeRoles('user');
 
-        // Retrieve all devices from the 'devices' table in the database
-        // $devices = Device::all();
-        // $devices = Device::paginate(5);
-        $devices = Device::with('manufacturer')->get();
+        // Retrieve the search query from the request
+        $search = request('search');
+
+        // Retrieve all devices from the 'devices' table in the database that match the search query
+        $devices = Device::with('manufacturer')
+            ->when($search, function ($query, $search) {
+                $query->where('model', 'like', "%{$search}%")
+                    ->orWhereHas('manufacturer', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->get();
+
         // Return a view called 'devices.index' and pass the retrieved devices to it
         return view('user.devices.index')->with('devices', $devices);
     }
@@ -34,15 +43,19 @@ class DeviceController extends Controller
     }
 
 
-    public function show($id)
+    public function show(Device $device)
     {
         $user = Auth::user();
         $user->authorizeRoles('user');
 
+        if ( !Auth::id()) {
+            return abort(403);
+        }
+
         // Find a device in the database by its ID
-        $device = Device::find($id);
+        $repairguides = $device->repairguides;
         // Return a view called 'devices.show' and pass the found device to it
-        return view('user.devices.show')->with('device', $device);
+        return view('user.devices.show', compact('device', 'repairguides'));
     }
 
 

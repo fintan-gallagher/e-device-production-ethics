@@ -10,42 +10,42 @@
             <div class="my-6 p-6 bg-white border-b border-gray-200 shadow-sm sm:rounded-lg">
                 <form action="{{ route('admin.devices.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    {{-- Text Input field for device title --}}
+                    {{-- Text Input field for device model --}}
                     <x-text-input
                         type="text"
-                        name="title"
-                        field="title"
-                        placeholder="Title"
+                        name="model"
+                        field="model"
+                        placeholder="Model"
                         class="w-full"
                         autocomplete="off"
-                        :value="@old('title')"></x-text-input>
+                        :value="@old('model')"></x-text-input>
 
                     {{-- Text Input field for artist name --}}
                     <x-text-input
                         type="text"
-                        name="artist"
-                        field="artist"
-                        placeholder="Artist..."
+                        name="repairability"
+                        field="repairability"
+                        placeholder="Repairable..."
                         class="w-full mt-6"
-                        :value="@old('artist')"></x-text-input>
+                        :value="@old('repairability')"></x-text-input>
 
                     {{-- ENUM dropdown component for genres --}}
                     <x-genre-dropdown
                         type="text"
-                        name="genre"
-                        field="genre"
-                        placeholder="Genre..."
+                        name="parts_availability"
+                        field="parts_availability"
+                        placeholder="Are Parts Available..."
                         class="w-full mt-6"
-                        :value="@old('genre')"></x-genre-dropdown>
+                        :value="@old('parts_availability')"></x-genre-dropdown>
 
                     {{-- Text Input for ISBN --}}
                     <x-text-input
                         type="text"
-                        name="isbn"
-                        field="isbn"
-                        placeholder="ISBN..."
+                        name="recycled"
+                        field="recycled"
+                        placeholder="Recycled..."
                         class="w-full mt-6"
-                        :value="@old('isbn')"></x-text-input>
+                        :value="@old('recycled')"></x-text-input>
 
                     {{-- Calendar component for date input --}}
                     <x-date-input
@@ -57,14 +57,13 @@
                         :value="@old('release_year')"></x-date-input>
 
                     {{-- Large text area component for device description --}}
-                    <x-textarea
-                        name="description"
-                        rows="10"
-                        field="description"
-                        placeholder="Description..."
+                    <x-text-input
+                        type="text"
+                        name="price"
+                        field="price"
+                        placeholder="Price..."
                         class="w-full mt-6"
-                        :value="@old('description')">
-                    </x-textarea>
+                        :value="@old('price')"></x-text-input>
 
                      <div class="mt-6">
                         <x-select-manufacturer name="manufacturer_id" :manufacturers="$manufacturers" :selected="old('manufacturer_id')"/>
@@ -81,6 +80,24 @@
                         field="device_cover"
                         :value="@old('device_cover')">>
                     </x-file-input>
+
+                    <div id="repairGuides">
+                            <!-- This is where new repair guide input fields will be added -->
+                        </div>
+
+                        <x-primary-button type="button" id="addRepairGuide">Add Repair Guide</x-primary-button>
+
+                        <script>
+                            document.getElementById('addRepairGuide').addEventListener('click', function() {
+                                var repairGuides = document.getElementById('repairGuides');
+                                var newInput = document.createElement('input');
+                                newInput.type = 'text';
+                                newInput.name = 'new_repair_guides[]';
+                                newInput.placeholder = 'Repair Guide URL';
+                                repairGuides.appendChild(newInput);
+                            });
+
+                        </script>
 
                     <x-primary-button class="mt-6">Save Device</x-primary-button>
                 </form>

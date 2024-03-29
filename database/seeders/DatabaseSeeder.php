@@ -26,8 +26,9 @@ class DatabaseSeeder extends Seeder
         //I only need to call the LabelSeeder, this calls hasDevices()
         //which seeds the devices table with 20 devices for each Label
         $this->call(ManufacturerSeeder::class);
+        $this->call(DeviceTableSeeder::class);
 
-        
+
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
