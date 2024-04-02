@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                       <img src="{{ asset('logo/logo-transparent-png.png') }}" class="h-20" alt=" Logo" />
                     </a>
                 </div>
 
@@ -51,7 +51,7 @@
                     @endif
                 </div>
 
-                
+
 
 
             <!-- Settings Dropdown -->
@@ -116,9 +116,33 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
+                @if(auth()->user()->hasRole('admin'))
+                        <x-responsive-nav-link :href="route('admin.devices.index')" :active="request()->routeIs('admin.devices.index')">
+                            {{ __('All Devices') }}
+                        </x-responsive-nav-link>
+                    @elseif(auth()->user()->hasRole('user'))
+                        <x-responsive-nav-link :href="route('user.devices.index')" :active="request()->routeIs('user.devices.index')">
+                            {{ __('All Devices') }}
+                        </x-responsive-nav-link>
+                    @else
+                        <x-responsive-nav-link :href="route('devices.index')" :active="request()->routeIs('devices.index')">
+                            {{ __('All Devices') }}
+                        </x-responsive-nav-link>
+                    @endif
+
+                    @if(auth()->user()->hasRole('admin'))
+                        <x-responsive-nav-link :href="route('admin.manufacturers.index')" :active="request()->routeIs('admin.manufacturers.index')">
+                            {{ __('All Manufacturers') }}
+                        </x-responsive-nav-link>
+                    @elseif(auth()->user()->hasRole('user'))
+                        <x-responsive-nav-link :href="route('user.manufacturers.index')" :active="request()->routeIs('user.manufacturers.index')">
+                            {{ __('All Manufacturers') }}
+                        </x-responsive-nav-link>
+                    @else
+                        <x-responsive-nav-link :href="route('manufacturers.index')" :active="request()->routeIs('manufacturers.index')">
+                            {{ __('All Manufacturers') }}
+                        </x-responsive-nav-link>
+                    @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
@@ -134,3 +158,5 @@
         </div>
     </div>
 </nav>
+
+

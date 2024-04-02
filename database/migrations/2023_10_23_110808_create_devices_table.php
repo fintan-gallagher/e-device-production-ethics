@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('parts_availability');
             $table->string('recycled');
             $table->date('release_year');
-            $table->text('price');
+            $table->decimal('price');
             $table->string('device_cover');
             $table->timestamps();
         });

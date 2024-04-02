@@ -20,6 +20,7 @@ class DeviceController extends Controller
 
         // Retrieve the search query from the request
         $search = request('search');
+        $orderBy = request('order_by'); // Retrieve the order_by parameter
 
         // Retrieve all devices from the 'devices' table in the database that match the search query
         $devices = Device::with('manufacturer')
@@ -29,10 +30,19 @@ class DeviceController extends Controller
                         $query->where('name', 'like', "%{$search}%");
                     });
             })
-            ->get();
+            ->when($orderBy, function ($query, $orderBy) {
+                if ($orderBy === 'price') {
+                    $query->orderBy('price', 'desc');
+                } else {
+                    $query->orderBy($orderBy, 'desc');
+                }
+            })
+            ->paginate(10)
+            ->appends(request()->query());
 
         // Return a view called 'devices.index' and pass the retrieved devices to it
         return view('admin.devices.index')->with('devices', $devices);
+
     }
 
     public function home()
@@ -75,7 +85,7 @@ class DeviceController extends Controller
         $request->validate([
             'model' => 'required',
             'repairability' => 'required|numeric|between:0,100',
-            'parts_availability' => 'required|in:yes,no',
+            'parts_availability' => 'required|in:Yes,No',
             'recycled' => 'required|numeric|between:0,100',
             'release_year' => 'required|date|before:2100-01-01',
             'price' => 'required|numeric|between:0,4500',
@@ -145,7 +155,7 @@ class DeviceController extends Controller
         $request->validate([
             'model' => 'required',
             'repairability' => 'required|numeric|between:0,100',
-            'parts_availability' => 'required|in:yes,no',
+            'parts_availability' => 'required|in:Yes,No',
             'recycled' => 'required|numeric|between:0,100',
             'release_year' => 'required|date|before:2100-01-01',
             'price' => 'required|numeric|between:0,4500',

@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 .bg-white {
-    background-color: #b3d7fe;
+    background-color: #c7cbcf;
+}
+
+.card .bg-dark {
+    background-color:#c7cbcf;
 }
