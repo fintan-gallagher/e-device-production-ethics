@@ -61,11 +61,23 @@ class DeviceController extends Controller
         if ( !Auth::id()) {
             return abort(403);
         }
+        $recommendedDevices = Device::where('repairability', '>', $device->repairability)
+        ->where('id', '!=', $device->id)
+        ->take(3)
+        ->get();
+        $recycledDevices = Device::where('recycled', '>', $device->recycled)->take(3)->get();
 
         // Find a device in the database by its ID
         $repairguides = $device->repairguides;
         // Return a view called 'devices.show' and pass the found device to it
-        return view('user.devices.show', compact('device', 'repairguides'));
+        return view('user.devices.show', compact('device', 'repairguides', 'recommendedDevices', 'recycledDevices'));
+    }
+
+    public function parts(Device $device)
+    {
+        $parts = $device->parts;
+
+        return view('user.devices.parts', compact('device', 'parts'));
     }
 
 

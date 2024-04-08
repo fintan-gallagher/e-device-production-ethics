@@ -12,7 +12,6 @@ class Sustainable extends Model
 
     protected $fillable = [
         'heading',
-        'score',
         'comments',
         'manufacturer_id'
     ];

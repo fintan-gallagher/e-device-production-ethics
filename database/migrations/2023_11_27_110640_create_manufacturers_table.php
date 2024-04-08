@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('ethics_score');
             $table->string('bio');
+            $table->string('manufacturer_img');
             $table->timestamps();
         });
     }

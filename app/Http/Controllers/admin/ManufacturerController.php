@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Device;
+use App\Models\Sustainable;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,13 +50,24 @@ class ManufacturerController extends Controller
     $user = Auth::user();
     $user->authorizeRoles('admin');
 
+    // Check if a file with the name 'manufacturer_img' is present in the request
+    if ($request->hasFile('manufacturer_img')) {
+        $image = $request->file('manufacturer_img');
+
+        // Store the uploaded image in the 'public/devices' directory with a unique name
+        $imageName = time() . '.' . $image->extension();
+        $image->storeAs('public/devices', $imageName);
+        $manufacturer_img_name = 'storage/devices/' . $imageName;
+    }
+
     // Validate the form data...
     $request->validate([
         'name' => 'required',
         'address' => 'required',
         'email' => 'required|email',
         'ethics_score' => 'required|numeric|between:0,100',
-        'bio' => 'required|max:1000'
+        'bio' => 'required|max:1000',
+        'manufacturer_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
     // Create a new manufacturer
@@ -64,7 +76,9 @@ class ManufacturerController extends Controller
         'address' => $request->input('address'),
         'email' => $request->input('email'),
         'ethics_score' => $request->input('ethics_score'),
-        'bio' => $request->input('bio')
+        'bio' => $request->input('bio'),
+        'manufacturer_img' => $manufacturer_img_name,
+
     ]);
 
     // Get the selected devices from the form
@@ -96,8 +110,9 @@ class ManufacturerController extends Controller
 
         // Find a device in the database by its ID
         $devices = $manufacturer->devices;
+        $sustainable = $manufacturer->sustainable;
         // Return a view called 'devices.show' and pass the found device to it
-        return view('admin.manufacturers.show', compact('manufacturer', 'devices'));
+        return view('admin.manufacturers.show', compact('manufacturer', 'devices', 'sustainable'));
     }
 
     // public function edit(Manufacturer $manufacturer)
@@ -138,8 +153,20 @@ public function update(Request $request, Manufacturer $manufacturer)
         'address' => 'required',
         'email' => 'required|email',
         'ethics_score' => 'required|numeric|between:0,100',
-        'bio' => 'required|max:1000'
+        'bio' => 'required|max:1000',
+        'manufacturer_img' => 'nullable|image'
     ]);
+
+    // Initialize the 'manufacturer_img_name' variable with the current manufacturer's image path
+    $manufacturer_img_name = $manufacturer->manufacturer_img;
+
+    // If a new 'manufacturer_img' file is provided in the request, update the image
+    if ($request->hasFile('manufacturer_img')) {
+        $image = $request->file('manufacturer_img');
+        $imageName = time() . '.' . $image->extension();
+        $image->storeAs('public/manufacturers', $imageName);
+        $manufacturer_img_name = 'storage/manufacturers/' . $imageName;
+    }
 
     // Update the manufacturer
     $manufacturer->update([
@@ -147,7 +174,8 @@ public function update(Request $request, Manufacturer $manufacturer)
         'address' => $request->input('address'),
         'email' => $request->input('email'),
         'ethics_score' => $request->input('ethics_score'),
-        'bio' => $request->input('bio')
+        'bio' => $request->input('bio'),
+        'manufacturer_img' => $manufacturer_img_name
         // ... other fields ...
     ]);
 

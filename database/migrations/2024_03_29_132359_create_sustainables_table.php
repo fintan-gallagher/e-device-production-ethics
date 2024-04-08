@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('sustainables', function (Blueprint $table) {
             $table->id();
             $table->string('heading');
-            $table->string('score');
-            $table->string('comments');
+            $table->text('comments');
             $table->timestamps();
         });
     }

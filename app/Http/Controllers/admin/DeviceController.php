@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Device;
 use App\Models\RepairGuide;
+use App\Models\Part;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,7 @@ class DeviceController extends Controller
                         $query->where('name', 'like', "%{$search}%");
                     });
             })
+            // Orders devices according to price, recyclability or repairability
             ->when($orderBy, function ($query, $orderBy) {
                 if ($orderBy === 'price') {
                     $query->orderBy('price', 'desc');
@@ -42,7 +44,6 @@ class DeviceController extends Controller
 
         // Return a view called 'devices.index' and pass the retrieved devices to it
         return view('admin.devices.index')->with('devices', $devices);
-
     }
 
     public function home()
@@ -110,10 +111,21 @@ class DeviceController extends Controller
 
         // Create new repair guides
         if ($request->has('new_repair_guides')) {
-            foreach ($request->input('new_repair_guides') as $guide) {
-                $device->repairGuides()->create(['guide' => $guide]);
+            foreach ($request->input('new_repair_guides') as $index => $guide) {
+                $heading = $request->input('new_repair_guide_headings')[$index];
+                $device->repairGuides()->create(['guide' => $guide, 'heading' => $heading]);
             }
         }
+
+        if ($request->has('new_parts_urls')) {
+            foreach ($request->input('new_parts_urls') as $index => $url) {
+                $heading = $request->input('new_parts_headings')[$index];
+                $oem = $request->input('new_parts_oems')[$index];
+                $adminRec = $request->input('new_parts_admin_recs')[$index];
+                $device->parts()->create(['heading' => $heading, 'part_url' => $url, 'oem' => $oem, 'admin_rec' => $adminRec]);
+            }
+        }
+
 
         // Redirect to the 'devices.index' route with a success message
         return redirect()->route('admin.devices.index')->with('success', 'Device created successfully');
@@ -129,10 +141,16 @@ class DeviceController extends Controller
             return abort(403);
         }
 
+        $recommendedDevices = Device::where('repairability', '>', $device->repairability)
+        ->where('id', '!=', $device->id)
+        ->take(3)
+        ->get();
+        $recycledDevices = Device::where('recycled', '>', $device->recycled)->take(3)->get();
+
         // Find a device in the database by its ID
         $repairguides = $device->repairguides;
         // Return a view called 'devices.show' and pass the found device to it
-        return view('admin.devices.show', compact('device', 'repairguides'));
+        return view('admin.devices.show', compact('device', 'repairguides', 'recommendedDevices', 'recycledDevices'));
     }
 
     public function edit(Device $device)
@@ -155,7 +173,7 @@ class DeviceController extends Controller
         $request->validate([
             'model' => 'required',
             'repairability' => 'required|numeric|between:0,100',
-            'parts_availability' => 'required|in:Yes,No',
+            // 'parts_availability' => 'required|in:Yes,No',
             'recycled' => 'required|numeric|between:0,100',
             'release_year' => 'required|date|before:2100-01-01',
             'price' => 'required|numeric|between:0,4500',
@@ -178,7 +196,7 @@ class DeviceController extends Controller
         $device->update([
             'model' => $request->model,
             'repairability' => $request->repairability,
-            'parts_availability' => $request->parts_availability,
+            // 'parts_availability' => $request->parts_availability,
             'recycled' => $request->recycled,
             'release_year' => $request->release_year,
             'price' => $request->price,
@@ -188,8 +206,9 @@ class DeviceController extends Controller
 
         // Create new repair guides
         if ($request->has('new_repair_guides')) {
-            foreach ($request->input('new_repair_guides') as $guide) {
-                $device->repairGuides()->create(['guide' => $guide]);
+            foreach ($request->input('new_repair_guides') as $index => $guide) {
+                $heading = $request->input('new_repair_guide_headings')[$index];
+                $device->repairGuides()->create(['guide' => $guide, 'heading' => $heading]);
             }
         }
 
@@ -200,10 +219,40 @@ class DeviceController extends Controller
             }
         }
 
+        // Create new Part
+        if ($request->has('new_parts_urls')) {
+            foreach ($request->input('new_parts_urls') as $index => $url) {
+                $heading = $request->input('new_parts_headings')[$index];
+                $oem = $request->input('new_parts_oems')[$index];
+                $adminRec = $request->input('new_parts_admin_recs')[$index];
+                $device->parts()->create(['heading' => $heading, 'part_url' => $url, 'oem' => $oem, 'admin_rec' => $adminRec]);
+            }
+        }
 
+        // Remove parts
+        if ($request->has('remove_parts')) {
+            foreach ($request->input('remove_parts') as $partId) {
+                Part::find($partId)->delete();
+            }
+
+            // Get a fresh instance of the device model
+            $device = $device->fresh();
+        }
+
+        // Update part_availability
+        $hasParts = $device->parts()->exists();
+        $device->parts_availability = $hasParts ? 'Yes' : 'No';
+        $device->save();
 
         // Redirect to the 'devices.show' route with a success message
         return redirect()->route('admin.devices.show', $device)->with('success', 'Device updated successfully');
+    }
+
+    public function parts(Device $device)
+    {
+        $parts = $device->parts;
+
+        return view('admin.devices.parts', compact('device', 'parts'));
     }
 
     public function destroy(Device $device)

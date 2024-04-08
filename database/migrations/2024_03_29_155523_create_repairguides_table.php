@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('repairguides', function (Blueprint $table) {
             $table->id();
+            $table->string('heading');
             $table->string('guide');
             $table->timestamps();
         });

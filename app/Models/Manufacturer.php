@@ -16,7 +16,8 @@ class Manufacturer extends Model
         'address',
         'email',
         'ethics_score',
-        'bio'
+        'bio',
+        'manufacturer_img'
     ];
     //returns the manufacturer's devices
     // eg. $manufacturer->devices
@@ -25,8 +26,8 @@ class Manufacturer extends Model
         return $this->hasMany(Device::class);
     }
 
-    public function sustainables()
+    public function sustainable()
     {
-        return $this->hasMany(Sustainable::class);
+        return $this->hasOne(Sustainable::class);
     }
 }

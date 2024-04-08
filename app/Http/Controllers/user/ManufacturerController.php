@@ -49,7 +49,8 @@ class ManufacturerController extends Controller
 
         // Find a device in the database by its ID
         $devices = $manufacturer->devices;
+        $sustainable = $manufacturer->sustainable;
         // Return a view called 'devices.show' and pass the found device to it
-        return view('user.manufacturers.show', compact('manufacturer', 'devices'));
+        return view('user.manufacturers.show', compact('manufacturer', 'devices', 'sustainable'));
     }
 }

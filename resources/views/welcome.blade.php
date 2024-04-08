@@ -30,22 +30,7 @@
                     @endauth
                 </div>
             @endif
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">Production Ethics in E-Device Production</div>
-
-                            <div class="card-body">
-                                <p>
-                                    Production Ethics in E-Device Production
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-guest-layout></x-guest-layout>
         </div>
     </body>
 </html>

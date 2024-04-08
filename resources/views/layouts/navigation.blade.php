@@ -1,8 +1,8 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div class="flex justify-between h-16 items-center px-6 py-4">
+            <div class="flex justify-between items-center px-6 py-4">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
@@ -11,41 +11,33 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Home') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                     @if(auth()->user()->hasRole('admin'))
                         <x-nav-link :href="route('admin.devices.index')" :active="request()->routeIs('admin.devices.index')">
-                            {{ __('All Devices') }}
+                            {{ __('Devices') }}
                         </x-nav-link>
                     @elseif(auth()->user()->hasRole('user'))
                         <x-nav-link :href="route('user.devices.index')" :active="request()->routeIs('user.devices.index')">
-                            {{ __('All Devices') }}
+                            {{ __('Devices') }}
                         </x-nav-link>
                     @else
                         <x-nav-link :href="route('devices.index')" :active="request()->routeIs('devices.index')">
-                            {{ __('All Devices') }}
+                            {{ __('Devices') }}
                         </x-nav-link>
                     @endif
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
                     @if(auth()->user()->hasRole('admin'))
-                        <x-nav-link :href="route('admin.devices.create')" :active="request()->routeIs('admin.devices.create')">
-                            {{ __('Create Device') }}
-                        </x-nav-link>
-
-                    @endif
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    @if(auth()->user()->hasRole('admin'))
-                        <x-nav-link :href="route('admin.manufacturers.index')" :active="request()->routeIs('admin.devices.index')">
+                        <x-nav-link :href="route('admin.manufacturers.index')" :active="request()->routeIs('admin.manufacturers.index')">
                             {{ __('Manufacturers') }}
                         </x-nav-link>
                     @elseif(auth()->user()->hasRole('user'))
-                        <x-nav-link :href="route('user.manufacturers.index')" :active="request()->routeIs('user.devices.index')">
+                        <x-nav-link :href="route('user.manufacturers.index')" :active="request()->routeIs('user.manufacturers.index')">
                             {{ __('Manufacturers') }}
                         </x-nav-link>
                     @endif
@@ -55,7 +47,7 @@
 
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="hidden sm:flex sm:items-center ml-auto sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -118,29 +110,29 @@
             <div class="mt-3 space-y-1">
                 @if(auth()->user()->hasRole('admin'))
                         <x-responsive-nav-link :href="route('admin.devices.index')" :active="request()->routeIs('admin.devices.index')">
-                            {{ __('All Devices') }}
+                            {{ __('Devices') }}
                         </x-responsive-nav-link>
                     @elseif(auth()->user()->hasRole('user'))
                         <x-responsive-nav-link :href="route('user.devices.index')" :active="request()->routeIs('user.devices.index')">
-                            {{ __('All Devices') }}
+                            {{ __('Devices') }}
                         </x-responsive-nav-link>
                     @else
                         <x-responsive-nav-link :href="route('devices.index')" :active="request()->routeIs('devices.index')">
-                            {{ __('All Devices') }}
+                            {{ __('Devices') }}
                         </x-responsive-nav-link>
                     @endif
 
                     @if(auth()->user()->hasRole('admin'))
                         <x-responsive-nav-link :href="route('admin.manufacturers.index')" :active="request()->routeIs('admin.manufacturers.index')">
-                            {{ __('All Manufacturers') }}
+                            {{ __('Manufacturers') }}
                         </x-responsive-nav-link>
                     @elseif(auth()->user()->hasRole('user'))
                         <x-responsive-nav-link :href="route('user.manufacturers.index')" :active="request()->routeIs('user.manufacturers.index')">
-                            {{ __('All Manufacturers') }}
+                            {{ __('Manufacturers') }}
                         </x-responsive-nav-link>
                     @else
                         <x-responsive-nav-link :href="route('manufacturers.index')" :active="request()->routeIs('manufacturers.index')">
-                            {{ __('All Manufacturers') }}
+                            {{ __('Manufacturers') }}
                         </x-responsive-nav-link>
                     @endif
 

@@ -54,12 +54,14 @@ class RepairGuideController extends Controller
 
         // Validate the incoming request data to ensure it meets the specified rules
         $request->validate([
+            'heading' => 'required',
             'guide' => 'required|url',
             'device_id' => 'required',
         ]);
 
         // Create a new Sustainable model instance and populate it with the validated data
         $sustainable = RepairGuide::create([
+            'heading' => $request->heading,
             'guide' => $request->guide,
             'device_id' => $request->device_id,
             'created_at' => now(),
@@ -102,12 +104,14 @@ class RepairGuideController extends Controller
 
         // Validate the incoming request data for updating a repairguide
         $request->validate([
+            'heading' => 'required',
             'guide' => 'required|url',
         ]);
 
 
         // Update the repairguide with the new data
         $repairguide->update([
+            'heading' => $request->heading,
             'guide' => $request->guide,
             'device_id' => $request->device_id,
         ]);

@@ -72,6 +72,8 @@
                             <x-device-checkbox :device="$device" :checked="$manufacturerWithDevices->devices->contains($device)" />
                         @endforeach
 
+                        <x-file-input type="file" name="manufacturer_img" placeholder="Manufacturer" class="w-full mt-6" field="manufacturer_img" :value="@old('manufacturer_img', $manufacturer->manufacturer_img)"></x-file-input>
+
                     <x-primary-button class="mt-6">Save Manufacturer</x-primary-button>
                 </form>
             </div>

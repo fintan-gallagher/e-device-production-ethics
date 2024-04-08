@@ -21,7 +21,8 @@ class ManufacturerFactory extends Factory
             'address' => $this->faker->address,
             'email' => $this->faker->email,
             'ethics_score' => $this->faker->numberBetween(0, 100),
-            'bio' => $this->faker->paragraph
+            'bio' => $this->faker->paragraph,
+            'manufacturer_img' => $this->faker->imageUrl,
         ];
     }
 }

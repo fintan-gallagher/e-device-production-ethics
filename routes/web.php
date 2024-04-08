@@ -11,6 +11,10 @@ use App\Http\Controllers\user\DeviceController as UserDeviceController;
 use App\Http\Controllers\admin\ManufacturerController as AdminManufacturerController;
 use App\Http\Controllers\user\ManufacturerController as UserManufacturerController;
 
+use App\Http\Controllers\admin\SustainableController as AdminSustainableController;
+use App\Http\Controllers\user\SustainableController as UserSustainableController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +58,11 @@ Route::resource('/user/devices', UserDeviceController::class)->middleware(['auth
 Route::resource('admin/manufacturers', AdminManufacturerController::class)->middleware(['auth'])->names('admin.manufacturers');
 Route::resource('user/manufacturers', UserManufacturerController::class)->middleware(['auth'])->names('user.manufacturers')->only(['index', 'show']);
 
+Route::resource('admin/sustainables', AdminSustainableController::class)->middleware(['auth'])->names('admin.sustainables');
+Route::resource('user/sustainables', UserSustainableController::class)->middleware(['auth'])->names('user.sustainables')->only(['index', 'show']);;
+
+Route::get('admin/devices/{device}/parts', [AdminDeviceController::class, 'parts'])->name('admin.devices.parts');
+Route::get('user/devices/{device}/parts', [UserDeviceController::class, 'parts'])->name('user.devices.parts');
 // Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');
 // Include routes defined in the 'auth.php' file, which handles authentication routes
 require __DIR__.'/auth.php';

@@ -23,5 +23,18 @@ class Part extends Model
         return $this->belongsTo(Device::class);
     }
 
+    protected static function boot()
+{
+    parent::boot();
 
+    static::deleting(function ($part) {
+        // Check if the device has any other parts left
+        $hasOtherParts = $part->device->parts()->where('id', '!=', $part->id)->exists();
+
+        // If not, update the part_availability attribute to 'No'
+        if (!$hasOtherParts) {
+            $part->device->update(['part_availability' => 'No']);
+        }
+    });
+}
 }

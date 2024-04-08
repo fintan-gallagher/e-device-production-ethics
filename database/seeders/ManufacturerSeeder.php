@@ -16,9 +16,9 @@ class ManufacturerSeeder extends Seeder
     public function run()
     {
         Manufacturer::factory()
-        ->times(3)
+        ->times(10)
         ->hasDevices(4)
-        ->hasSustainables(4)
+        ->hasSustainable(1)
         ->create();
     }
 }

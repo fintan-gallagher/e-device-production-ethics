@@ -35,17 +35,16 @@ class SustainableController extends Controller
         return view('admin.sustainables.welcome');
     }
 
-    public function create()
-    {
-        // Return a view for creating a new sustainable (likely a form)
-        $user = Auth::user();
-        $user->authorizeRoles('admin');
+    public function create(Request $request)
+{
+    $user = Auth::user();
+    $user->authorizeRoles('admin');
 
-        $manufacturers = Manufacturer::all();
+    $manufacturers = Manufacturer::all();
+    $manufacturer_id = $request->query('manufacturer');
 
-
-        return view('admin.sustainables.create')->with('manufacturers', $manufacturers);
-    }
+    return view('admin.sustainables.create', compact('manufacturers', 'manufacturer_id'));
+}
 
     public function store(Request $request)
     {
@@ -55,7 +54,6 @@ class SustainableController extends Controller
         // Validate the incoming request data to ensure it meets the specified rules
         $request->validate([
             'heading' => 'required',
-            'score' => 'required|numeric|between:0,100',
             'comments' => 'required',
             'manufacturer_id' => 'required',
         ]);
@@ -63,7 +61,6 @@ class SustainableController extends Controller
         // Create a new Sustainable model instance and populate it with the validated data
         $sustainable = Sustainable::create([
             'heading' => $request->heading,
-            'score' => $request->score,
             'comments' => $request->comments,
             'manufacturer_id' => $request->manufacturer_id,
             'created_at' => now(),
@@ -73,7 +70,7 @@ class SustainableController extends Controller
 
 
         // Redirect to the 'sustainables.index' route with a success message
-        return redirect()->route('admin.sustainables.index')->with('success', 'Sustainable created successfully');
+        return redirect()->route('admin.sustainables.show', $sustainable)->with('success', 'Sustainable created successfully');
     }
 
 
@@ -84,6 +81,14 @@ class SustainableController extends Controller
 
         // Find a sustainable in the database by its ID
         $sustainable = Sustainable::find($id);
+        $manufacturers = Manufacturer::inRandomOrder()->take(3)->get();
+
+        if ($sustainable) {
+            return view('admin.sustainables.show', ['sustainable' => $sustainable, 'manufacturers' => $manufacturers]);
+        } else {
+            return redirect()->route('admin.sustainables.index')->with('error', 'No sustainable found with the given ID');
+        }
+
         // Return a view called 'sustainables.show' and pass the found sustainable to it
         return view('admin.sustainables.show')->with('sustainable', $sustainable);
     }
@@ -107,7 +112,6 @@ class SustainableController extends Controller
         // Validate the incoming request data for updating a sustainable
         $request->validate([
             'heading' => 'required',
-            'score' => 'required|numeric|between:0,100',
             'comments' => 'required'
         ]);
 
@@ -115,9 +119,8 @@ class SustainableController extends Controller
         // Update the sustainable with the new data
         $sustainable->update([
             'heading' => $request->heading,
-            'score' => $request->score,
             'comments' => $request->comments,
-            'manufacturer_id' => $request->manufacturer_id,
+            // 'manufacturer_id' => $request->manufacturer_id,
         ]);
 
 
@@ -127,17 +130,17 @@ class SustainableController extends Controller
     }
 
     public function destroy(Sustainable $sustainable)
-    {
-        $user = Auth::user();
-        $user->authorizeRoles('admin');
+{
+    $user = Auth::user();
+    $user->authorizeRoles('admin');
 
-        // Find and delete related sustainables in sustainable_sustainable table
-        // $sustainable->artists()->detach();
+    // Get the manufacturer associated with the sustainable
+    $manufacturer = $sustainable->manufacturer;
 
-        // Delete the specified sustainable sustainable from the database
-        $sustainable->delete();
+    // Delete the specified sustainable from the database
+    $sustainable->delete();
 
-        // Redirect to the 'admin.sustainables.index' route with a success message
-        return redirect()->route('admin.sustainables.index')->with('success', 'Sustainable deleted successfully');
-    }
+    // Redirect to the 'admin.manufacturers.show' route with a success message
+    return redirect()->route('admin.manufacturers.show', $manufacturer)->with('success', 'Sustainable deleted successfully');
+}
 }

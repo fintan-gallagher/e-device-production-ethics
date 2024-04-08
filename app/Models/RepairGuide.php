@@ -11,6 +11,7 @@ class RepairGuide extends Model
     use HasFactory;
 
     protected $fillable = [
+        'heading',
         'guide',
         'device_id'
     ];
