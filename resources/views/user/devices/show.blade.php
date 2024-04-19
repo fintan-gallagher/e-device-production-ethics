@@ -73,7 +73,7 @@
                                     <img src="{{ asset($recommendedDevice->device_cover) }}" class="w-full rounded-t shadow-lg object-cover w-full h-72">
                                     <div class="p-6 h-auto">
                                         <p class="text-gray-600 text-xs md:text-sm">DEVICE</p>
-                                        <div class="font-bold text-xl text-gray-900">{{ $recommendedDevice->model }}</div>
+                                        <div class="font-bold text-xl text-gray-900">{{$recommendedDevice->manufacturer->name}} {{ $recommendedDevice->model }}</div>
                                         <p>Repairability:</p>
                                         <div class="w-full bg-gray-200 rounded-full">
                                             <div class="h-4 bg-blue-500 rounded-full flex items-center justify-center text-white" style="width: {{ $recommendedDevice->repairability }}%;">
@@ -101,7 +101,7 @@
                                     <img src="{{ asset($recycledDevice->device_cover) }}" class="w-full rounded-t shadow-lg object-cover w-full h-72">
                                     <div class="p-6 h-auto">
                                         <p class="text-gray-600 text-xs md:text-sm">DEVICE</p>
-                                        <div class="font-bold text-xl text-gray-900">{{ $recycledDevice->model }}</div>
+                                        <div class="font-bold text-xl text-gray-900">{{ $recycledDevice->manufacturer->name }} {{ $recycledDevice->model }}</div>
                                         <p>Recyclability:</p>
                                         <div class="w-full bg-gray-200 rounded-full">
                                             <div class="h-4 bg-blue-500 rounded-full flex items-center justify-center text-white" style="width: {{ $recycledDevice->recycled }}%;">

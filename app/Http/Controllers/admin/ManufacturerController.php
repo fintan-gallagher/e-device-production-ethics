@@ -199,7 +199,7 @@ public function update(Request $request, Manufacturer $manufacturer)
 
     // Associate the selected devices with the manufacturer
     foreach ($selectedDevices as $deviceId) {
-        // Assuming you have a Device model
+        
         $device = Device::find($deviceId);
 
         // Update the device with the new manufacturer_id

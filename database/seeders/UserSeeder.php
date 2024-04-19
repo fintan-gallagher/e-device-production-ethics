@@ -6,9 +6,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Role; // Add this line
-use App\Models\User; // Assuming User is also in App\Models
-use Illuminate\Support\Facades\Hash; // For Hash::make
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash; 
 
 class UserSeeder extends Seeder
 {
