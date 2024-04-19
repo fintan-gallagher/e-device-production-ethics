@@ -1,3 +1,5 @@
+
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -36,6 +38,36 @@
                                         @else
                                         @endif
                                     </p>
+
+                                    <div id="mapid" style="width:100%; height: 400px;"></div>
+
+                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArFm4l1Jyy5VMq7TtwtgiDar5hqBKiP4E"></script>
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                var map = new google.maps.Map(document.getElementById('mapid'), {
+                                                    center: {lat: {{ $manufacturer->lat }}, lng: {{ $manufacturer->lng }}},
+                                                    zoom: 13
+                                                });
+
+                                                var marker = new google.maps.Marker({
+                                                    position: {lat: {{ $manufacturer->lat }}, lng: {{ $manufacturer->lng }}},
+                                                    map: map,
+                                                    title: "{{ $manufacturer->name }}"
+                                                });
+
+                                                var infowindow = new google.maps.InfoWindow({
+                                                    content: "{{ $manufacturer->name }}"
+                                                });
+
+                                                marker.addListener('click', function() {
+                                                    infowindow.open(map, marker);
+                                                });
+
+                                                // Open the infowindow immediately
+                                                infowindow.open(map, marker);
+                                            });
+                                        </script>
 
                 </div>
             </div>

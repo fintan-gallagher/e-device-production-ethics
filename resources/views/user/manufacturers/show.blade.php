@@ -1,3 +1,5 @@
+
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -8,7 +10,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- Display manufacturer details -->
+            <!-- Display Manufacturer details -->
 
             <div class="card lg:card-side bg-gray-300 shadow-xl flex">
                 <figure class="w-1/2"><img src="{{asset($manufacturer->manufacturer_img)}}" alt="Manufacturer" /></figure>
@@ -37,10 +39,41 @@
                                         @endif
                                     </p>
 
+                                    <div id="mapid" style="width:100%; height: 400px;"></div>
+
+                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArFm4l1Jyy5VMq7TtwtgiDar5hqBKiP4E"></script>
+
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                var map = new google.maps.Map(document.getElementById('mapid'), {
+                                                    center: {lat: {{ $manufacturer->lat }}, lng: {{ $manufacturer->lng }}},
+                                                    zoom: 13
+                                                });
+
+                                                var marker = new google.maps.Marker({
+                                                    position: {lat: {{ $manufacturer->lat }}, lng: {{ $manufacturer->lng }}},
+                                                    map: map,
+                                                    title: "{{ $manufacturer->name }}"
+                                                });
+
+                                                var infowindow = new google.maps.InfoWindow({
+                                                    content: "{{ $manufacturer->name }}"
+                                                });
+
+                                                marker.addListener('click', function() {
+                                                    infowindow.open(map, marker);
+                                                });
+
+                                                // Open the infowindow immediately
+                                                infowindow.open(map, marker);
+                                            });
+                                        </script>
+
                 </div>
             </div>
 
-            <!-- Display devices for the manufacturer -->
+
+            <!-- Display books for the publisher -->
 
             <h3 class="font-bold text-2xl mt-6 mb-4">Devices by {{ $manufacturer->name }}</h3>
 
@@ -69,6 +102,12 @@
                 @endforeach
             </div>
 
+
+
+
+
+
+
             <div class="container max-w-5xl my-10 mx-auto ">
                 <div class="mx-0 sm:mx-6">
                     <!--Subscribe-->
@@ -87,7 +126,6 @@
                     <!-- /Subscribe-->
                 </div>
             </div>
-
         </div>
     </div>
 </x-app-layout>

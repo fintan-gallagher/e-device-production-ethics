@@ -33,7 +33,7 @@
                     </a> --}}
                     <a href="{{ route('user.devices.show', $device) }}">
                         @if ($device->device_cover)
-                        <img src="{{ asset($device->device_cover) }}" alt="{{ $device->model }}" class="rounded-4" alt="...">
+                        <img src="{{ asset($device->device_cover) }}" alt="{{ $device->model }}" class="rounded-4 object-cover w-full h-72" alt="...">
                         @else
                         No Image
                         @endif

@@ -19,6 +19,8 @@ class ManufacturerFactory extends Factory
         return [
             'name' => $this->faker->name,
             'address' => $this->faker->address,
+            'lng' => $this->faker->longitude,
+            'lat' => $this->faker->latitude,
             'email' => $this->faker->email,
             'ethics_score' => $this->faker->numberBetween(0, 100),
             'bio' => $this->faker->paragraph,

@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
+            $table->decimal('lng', 10, 6);
+            $table->decimal('lat', 9, 6);
             $table->string('email');
-            $table->string('ethics_score');
+            $table->integer('ethics_score');
             $table->string('bio');
             $table->string('manufacturer_img');
             $table->timestamps();

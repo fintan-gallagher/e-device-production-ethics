@@ -64,9 +64,11 @@ class ManufacturerController extends Controller
     $request->validate([
         'name' => 'required',
         'address' => 'required',
+        'lng' => 'required|numeric|between:-180,180',
+        'lat' => 'required|numeric|between:-90,90',
         'email' => 'required|email',
         'ethics_score' => 'required|numeric|between:0,100',
-        'bio' => 'required|max:1000',
+        'bio' => 'required|max:250',
         'manufacturer_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
@@ -74,6 +76,8 @@ class ManufacturerController extends Controller
     $manufacturer = Manufacturer::create([
         'name' => $request->input('name'),
         'address' => $request->input('address'),
+        'lng' => $request->input('lng'),
+        'lat' => $request->input('lat'),
         'email' => $request->input('email'),
         'ethics_score' => $request->input('ethics_score'),
         'bio' => $request->input('bio'),
@@ -151,9 +155,11 @@ public function update(Request $request, Manufacturer $manufacturer)
     $request->validate([
         'name' => 'required',
         'address' => 'required',
+        'lng' => 'required|numeric|between:-180,180',
+        'lat' => 'required|numeric|between:-90,90',
         'email' => 'required|email',
         'ethics_score' => 'required|numeric|between:0,100',
-        'bio' => 'required|max:1000',
+        'bio' => 'required|max:250',
         'manufacturer_img' => 'nullable|image'
     ]);
 
@@ -172,6 +178,8 @@ public function update(Request $request, Manufacturer $manufacturer)
     $manufacturer->update([
         'name' => $request->input('name'),
         'address' => $request->input('address'),
+        'lng' => $request->input('lng'),
+        'lat' => $request->input('lat'),
         'email' => $request->input('email'),
         'ethics_score' => $request->input('ethics_score'),
         'bio' => $request->input('bio'),

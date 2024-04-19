@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
             $table->string('model');
-            $table->string('repairability');
+            $table->integer('repairability');
             $table->string('parts_availability');
-            $table->string('recycled');
+            $table->integer('recycled');
             $table->date('release_year');
             $table->decimal('price');
             $table->string('device_cover');

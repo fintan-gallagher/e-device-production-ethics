@@ -14,6 +14,8 @@ class Manufacturer extends Model
     protected $fillable = [
         'name',
         'address',
+        'lng',
+        'lat',
         'email',
         'ethics_score',
         'bio',

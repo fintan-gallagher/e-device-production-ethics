@@ -14,7 +14,7 @@
 
             <div class="flex flex-wrap justify-around">
                 @forelse ($manufacturers as $manufacturer)
-                <a href="{{ route('user.manufacturers.show', $manufacturer) }}" style="object-fit: cover;" class="mt-4 mb-4 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <a href="{{ route('user.manufacturers.show', $manufacturer) }}" class="mt-4 mb-4 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:object-cover md:w-1/2 md:h-48">
                     <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ asset($manufacturer->manufacturer_img) }}" alt="{{ $manufacturer->name }}">
                     <div class="flex flex-col justify-between p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $manufacturer->name }}</h5>
@@ -30,7 +30,7 @@
                 <p>No manufacturers</p>
                 @endforelse
             </div>
-            
+
             <div class="container max-w-5xl my-10 mx-auto ">
                 <div class="mx-0 sm:mx-6">
                     <!--Subscribe-->

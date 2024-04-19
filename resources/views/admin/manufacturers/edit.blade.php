@@ -35,6 +35,28 @@
                         :value="@old('address', $manufacturerWithDevices->address)"
                     ></x-text-input>
 
+                    <p>Longitude</p>
+
+                    <x-text-input
+                        type="text"
+                        name="lng"
+                        field="lng"
+                        placeholder="Longitude..."
+                        class="w-full mt-6"
+                        :value="@old('lng', $manufacturerWithDevices->lng)"
+                    ></x-text-input>
+
+                    <p>Latitude</p>
+
+                    <x-text-input
+                        type="text"
+                        name="lat"
+                        field="lat"
+                        placeholder="Latitude..."
+                        class="w-full mt-6"
+                        :value="@old('lat', $manufacturerWithDevices->lat)"
+                    ></x-text-input>
+
                     <p>Email</p>
                     <x-text-input
                         type="text"

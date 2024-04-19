@@ -35,7 +35,7 @@ class DeviceController extends Controller
                     $query->orderBy($orderBy, 'desc');
                 }
             })
-            ->paginate(10)
+            ->paginate(12)
             ->appends(request()->query());
 
         // Return a view called 'devices.index' and pass the retrieved devices to it

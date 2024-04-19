@@ -73,25 +73,33 @@ class SustainableController extends Controller
         return redirect()->route('admin.sustainables.show', $sustainable)->with('success', 'Sustainable created successfully');
     }
 
+public function show($id)
+{
+    $user = Auth::user();
+    $user->authorizeRoles('admin');
 
-    public function show($id)
-    {
-        $user = Auth::user();
-        $user->authorizeRoles('admin');
+    // Find a sustainable in the database by its ID
+    $sustainable = Sustainable::find($id);
 
-        // Find a sustainable in the database by its ID
-        $sustainable = Sustainable::find($id);
-        $manufacturers = Manufacturer::inRandomOrder()->take(3)->get();
+    // Get the ethics_score of the manufacturer associated with the current sustainable
+    $ethics_score = $sustainable->manufacturer->ethics_score;
 
-        if ($sustainable) {
-            return view('admin.sustainables.show', ['sustainable' => $sustainable, 'manufacturers' => $manufacturers]);
-        } else {
-            return redirect()->route('admin.sustainables.index')->with('error', 'No sustainable found with the given ID');
-        }
+    // Get three manufacturers with a higher ethics_score
+    $manufacturers = Manufacturer::where('ethics_score', '>', $ethics_score)
+        ->inRandomOrder()
+        ->take(3)
+        ->get();
 
-        // Return a view called 'sustainables.show' and pass the found sustainable to it
-        return view('admin.sustainables.show')->with('sustainable', $sustainable);
+    if ($sustainable) {
+        return view('admin.sustainables.show', ['sustainable' => $sustainable, 'manufacturers' => $manufacturers]);
+    } else {
+        return redirect()->route('admin.sustainables.index')->with('error', 'No sustainable found with the given ID');
     }
+
+    // Return a view called 'sustainables.show' and pass the found sustainable to it
+    return view('admin.sustainables.show')->with('sustainable', $sustainable);
+}
+
 
     public function edit(Sustainable $sustainable)
     {

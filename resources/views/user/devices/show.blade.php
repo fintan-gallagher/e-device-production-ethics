@@ -70,7 +70,7 @@
                         <div class="w-full sm:w-1/2 md:w-1/3 px-2 pb-12">
                             <div class="h-full bg-white rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
                                 <a href="{{ route('user.devices.show', $recommendedDevice) }}" class="no-underline hover:no-underline">
-                                    <img src="{{ asset($recommendedDevice->device_cover) }}" class="w-full rounded-t shadow-lg">
+                                    <img src="{{ asset($recommendedDevice->device_cover) }}" class="w-full rounded-t shadow-lg object-cover w-full h-72">
                                     <div class="p-6 h-auto">
                                         <p class="text-gray-600 text-xs md:text-sm">DEVICE</p>
                                         <div class="font-bold text-xl text-gray-900">{{ $recommendedDevice->model }}</div>
@@ -98,7 +98,7 @@
                         <div class="w-full sm:w-1/2 md:w-1/3 px-2 pb-12">
                             <div class="h-full bg-white rounded overflow-hidden shadow-md hover:shadow-lg relative smooth">
                                 <a href="{{ route('user.devices.show', $recycledDevice) }}" class="no-underline hover:no-underline">
-                                    <img src="{{ asset($recycledDevice->device_cover) }}" class="w-full rounded-t shadow-lg">
+                                    <img src="{{ asset($recycledDevice->device_cover) }}" class="w-full rounded-t shadow-lg object-cover w-full h-72">
                                     <div class="p-6 h-auto">
                                         <p class="text-gray-600 text-xs md:text-sm">DEVICE</p>
                                         <div class="font-bold text-xl text-gray-900">{{ $recycledDevice->model }}</div>
